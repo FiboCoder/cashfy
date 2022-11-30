@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import ModalGetImage from "../components/ModalGetImage";
+import LoadingBar from "../components/LoadingBar";
 
 const RegisterScreen = (props) =>{
 
@@ -49,14 +50,14 @@ const RegisterScreen = (props) =>{
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setConfirmPassword(text)}} value={props.confirmPassword} placeholder="Confirmar senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setConfirmPassword(text)}} value={props.confirmPassword} placeholder="Confirmar senha"></TextInput>
 
                 </View>
                 
@@ -77,13 +78,14 @@ const RegisterScreen = (props) =>{
                     </TouchableOpacity>
                 </View>
                 
+                <Pressable onPress={()=>{navigation.navigate("LoginStack")}} style={styles.noAccountContainer}>
+                    <Text style={styles.noAccountText1}>Tem conta? </Text>    
+                    <Text style={styles.noAccountText2}>Acesse.</Text>    
+                </Pressable>
 
             </View>
 
-            <Pressable onPress={()=>{navigation.navigate("LoginStack")}} style={styles.noAccountContainer}>
-                <Text style={styles.noAccountText1}>Tem conta? </Text>    
-                <Text style={styles.noAccountText2}>Acesse.</Text>    
-            </Pressable>
+            
 
             {
                 props.showImageSelectionModal 
@@ -98,8 +100,11 @@ const RegisterScreen = (props) =>{
                     :   
                         null
             }
+
+        { props.loading ? <LoadingBar/> : null}
             
         </View>
+        
     );
 }
 
@@ -117,6 +122,7 @@ const styles = StyleSheet.create({
 
     subContainer:{
 
+        flex: 1,
         alignItems: "center",
         width: "100%",
         marginTop: 30,
@@ -137,7 +143,7 @@ const styles = StyleSheet.create({
         height: 140,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#F5D9FF",
         borderRadius: 100,
         marginTop: 40,
         marginBottom: 20
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#F5D9FF",
         borderRadius: 30,
         padding: 12,
         marginBottom: 12,
@@ -199,7 +205,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         borderRadius: 30,
         padding: 14,
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#FFFFFF",
         marginTop: 10,
         marginLeft: 12,
         marginRight: 12,
@@ -216,8 +222,7 @@ const styles = StyleSheet.create({
 
     noAccountContainer:{
 
-        position: "absolute",
-        bottom: 0,
+        marginTop: 50,
         marginBottom: 10,
         flexDirection: "row"
     },

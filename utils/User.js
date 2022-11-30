@@ -32,7 +32,7 @@ export class User{
 
         return new Promise((resolve, reject)=>{
 
-            let path = "images/users/" + email + "/profile/" + email + ".jpg";
+            let path = "images/users/" + email + "/profile/" + email;
 
             let imageRef = ref(storage, path);
             uploadBytes(imageRef, blob).then(snapshot=>{

@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
+import LoadingBar from "../components/LoadingBar";
 
 const LoginScreen = (props) =>{
 
@@ -29,7 +30,7 @@ const LoginScreen = (props) =>{
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
 
                 </View>
                 
@@ -49,13 +50,13 @@ const LoginScreen = (props) =>{
                     </TouchableOpacity>
                 </View>
                 
-
+                <Pressable onPress={()=>{navigation.navigate("RegisterStack")}} style={styles.noAccountContainer}>
+                    <Text style={styles.noAccountText1}>Não tem conta? </Text>    
+                    <Text style={styles.noAccountText2}>Cadastre-se.</Text>    
+                </Pressable>
             </View>
 
-            <Pressable onPress={()=>{navigation.navigate("RegisterStack")}} style={styles.noAccountContainer}>
-                <Text style={styles.noAccountText1}>Não tem conta? </Text>    
-                <Text style={styles.noAccountText2}>Cadastre-se.</Text>    
-            </Pressable>
+            { props.loading ? <LoadingBar/> : null}
             
         </View>
     );
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
 
     subContainer:{
 
+        flex: 1,
         alignItems: "center",
         width: "100%",
         marginTop: 30,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#F5D9FF",
         borderRadius: 30,
         padding: 12,
         marginBottom: 12,
@@ -168,8 +170,7 @@ const styles = StyleSheet.create({
 
     noAccountContainer:{
 
-        position: "absolute",
-        bottom: 0,
+        marginTop: 50,
         marginBottom: 10,
         flexDirection: "row"
     },

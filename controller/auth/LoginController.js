@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View } from "react-native";
 import LoginScreen from "../../screens/auth/LoginScreen";
 import { User } from "../../utils/User";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginController = () =>{
 
@@ -9,23 +10,39 @@ const LoginController = () =>{
     const [password, setPassword] = useState("");
 
     const [errorMessage, setErrorMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const navigation = useNavigation();
 
     const login = () =>{
+
+        setLoading(true);
         
-        if(email != ""){
+        if(email.toLowerCase() != ""){
 
             if(password != ""){
 
-                User.signIn(email, password).then(result=>{
+                User.signIn(email.toLowerCase(), password).then(result=>{
 
+                    console.log(result)
 
-                });
+                    setEmail("");
+                    setPassword("");
+                    setLoading(false);
+                    navigation.navigate("HomeStack");
+                }).catch(err=>{
+
+                    setPassword("");
+                    setLoading(false);
+                })
             }else{
     
+                setLoading(false);
                 setErrorMessage("Preencha o campo Senha");
             }
         }else{
 
+            setLoading(false);
             setErrorMessage("Preencha o campo E-mail!");
         }
 
@@ -39,10 +56,11 @@ const LoginController = () =>{
             setEmail={setEmail}
             setPassword={setPassword}
 
-            email={email}
+            email={email.toLowerCase()}
             password={password}
 
             errorMessage={errorMessage}
+            loading={loading}
 
             login={login}
         />
