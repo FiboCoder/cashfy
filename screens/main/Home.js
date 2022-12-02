@@ -1,106 +1,130 @@
 import React from "react";
-import { Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 import { LineChart } from "react-native-chart-kit";
 import { RNSVGSvgAndroid } from "react-native-svg";
+import TransactionComponent from "../components/TransactionComponent";
 
 
 const Home = (props) =>{
 
     return(
 
-        <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
+        <>
+            <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
 
-            <View style={styles.cardContainer}>
+                <View style={styles.cardContainer}>
 
-                <View style={styles.topContainer}>
+                    <View style={styles.topContainer}>
 
-                    <Text style={styles.usernameText}>Nome do usuário</Text>
-                    <TouchableOpacity style={styles.imageProfileContainer}>
+                        <Text style={styles.usernameText}>Nome do usuário</Text>
+                        <TouchableOpacity style={styles.imageProfileContainer}>
 
-                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                            <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                        </TouchableOpacity>
+                        
+                    </View>
+
+                    <View>
+                        <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
+                        <Text style={styles.balanceTextCard}>R$10.029.267,89</Text>
+                    </View>
+                </View>
+
+                <View style={styles.topButtonsContainer}>
+
+                    <TouchableOpacity onPress={()=>{props.setPressedButton("Earnings")}} style={props.pressedButton === "Earnings" ? styles.activeButton : styles.inactiveButton}>
+                        <Text style={props.pressedButton === "Earnings" ? styles.activeText : styles.inactiveText}>Ganhos</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
+                        <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Todos</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
+                        <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={styles.chartContainer}>
+
+                <LineChart
+                    data={{
+                    labels: ["1", "5", "10", "15", "20", "25", "30"],
+                    datasets: [
+                        {
+                        data: [
+                            Math.random() * 100,
+                            Math.random() * 100,
+                            Math.random() * 100,
+                            Math.random() * 100,
+                            Math.random() * 100,
+                            Math.random() * 100
+                        ]
+                        }
+                    ]
+                    }}
+                    width={Dimensions.get("window").width} // from react-native
+                    height={220}
+                    yAxisLabel="R$"
+                    yAxisSuffix="k"
+                    yAxisInterval={1} // optional, defaults to 1
+                    chartConfig={{
+                    backgroundColor: "#FFFFFF",
+                    backgroundGradientFrom: "#FFF",
+                    backgroundGradientTo: "#FFF",
+                    fillShadowGradientFrom: "#8000AD",
+                    fillShadowGradientTo: "#AF73C4",
+                    decimalPlaces: 2, // optional, defaults to 2dp
+                    color: (opacity = 1) => `#8000AD`,
+                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                    style: {
+                        borderRadius: 16
+                    },
+                    propsForDots: {
+                        r: "6",
+                        strokeWidth: "2",
+                        stroke: "#8000AD"
+                    }
+                    }}
+                    bezier
+                    style={{
+                    marginVertical: 8,
+                    }}
+                />
+                </View>
+
+                <View style={styles.transactionsContainer}>
+
+                    <View style={styles.transactionsTitleContainer}>
+                        <Text style={styles.transactionsText}>Transações</Text>
+
+                        <TouchableOpacity>
+
+                            <MaterialIcons name="arrow-forward-ios" size={24} color="#8000AD" />
+
+                        </TouchableOpacity>
+                    </View>
+
+                    <TransactionComponent type={"red"}/>
+                    <TransactionComponent type={"green"}/>
+                    <TransactionComponent type={"red"}/>
+                    <TransactionComponent type={"green"}/>
+                    <TransactionComponent type={"red"}/>
+                    <TransactionComponent type={"green"}/>
+
                     
                 </View>
 
-                <View>
-                    <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
-                    <Text style={styles.balanceTextCard}>R$10.029.267,89</Text>
-                </View>
-            </View>
+                
+            </ScrollView>
 
-            <View style={styles.topButtonsContainer}>
-
-                <TouchableOpacity onPress={()=>{props.setPressedButton("Earnings")}} style={props.pressedButton === "Earnings" ? styles.activeButton : styles.inactiveButton}>
-                    <Text style={props.pressedButton === "Earnings" ? styles.activeText : styles.inactiveText}>Ganhos</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
-                    <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Todos</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
-                    <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
-                </TouchableOpacity>
-            </View>
-
-            <View style={styles.chartContainer}>
-
-            <LineChart
-                data={{
-                labels: ["1", "5", "10", "15", "20", "25", "30"],
-                datasets: [
-                    {
-                    data: [
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100
-                    ]
-                    }
-                ]
-                }}
-                width={Dimensions.get("window").width} // from react-native
-                height={220}
-                yAxisLabel="R$"
-                yAxisSuffix="k"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                backgroundColor: "#FFFFFF",
-                backgroundGradientFrom: "#FFF",
-                backgroundGradientTo: "#FFF",
-                fillShadowGradientFrom: "#8000AD",
-                fillShadowGradientTo: "#AF73C4",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `#8000AD`,
-                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                style: {
-                    borderRadius: 16
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: "#8000AD"
-                }
-                }}
-                bezier
-                style={{
-                marginVertical: 8,
-                }}
-            />
-            </View>
-
-            <View style={styles.transactionsContainer}>
-
-                <View style={styles.transactionsTitleContainer}>
-                    <Text style={styles.transactionsText}>Transactions</Text>
-                    <MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-                </View>
-            </View>
-        </ScrollView>
+            <TouchableOpacity style={styles.addTransactionButton}>
+                <Ionicons name="add" size={44} color="white" />
+            </TouchableOpacity>
+        </>
     );
 }
 
@@ -111,7 +135,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         paddingTop: Constants.statusBarHeight + 30,
-        backgroundColor: "white"
+        backgroundColor: "white",
     },
 
     cardContainer:{
@@ -229,6 +253,8 @@ const styles = StyleSheet.create({
 
     transactionsContainer:{
 
+        marginBottom: 58,
+        flexDirection: "column",
         alignSelf: "stretch",
         marginLeft: 24,
         marginRight: 24,
@@ -237,6 +263,7 @@ const styles = StyleSheet.create({
 
     transactionsTitleContainer:{
 
+        marginBottom: 30,
         alignSelf: "stretch",
         flexDirection: "row",
         alignItems: "center",
@@ -245,11 +272,27 @@ const styles = StyleSheet.create({
 
     transactionsText:{
 
-        fontSize: 20,
-        fontWeight: "700"
+        fontSize: 22,
+        fontWeight: "700",
+        color: "#8000AD"
     },
 
+    addTransactionButton:{
 
+        zIndex: 1,
+        position: "absolute",
+        width: 70,
+        height: 70,
+        right: 0,
+        bottom: 0,
+        marginRight: 24,
+        marginBottom: 24,
+        borderRadius: 100,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#8000AD",
+        elevation: 8
+    }
 
 });
 
