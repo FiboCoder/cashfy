@@ -1,4 +1,4 @@
-import Profile from "../../screens/main/Profille";
+import Profile from "../../screens/settings/Profille";
 
 const ProfileController = () =>{
 

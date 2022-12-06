@@ -1,12 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 
 const TransactionComponent = (props) =>{
 
-    console.log(props.type)
+    const navigation = useNavigation();
+
     return(
 
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack")}} style={styles.container}>
 
             <View style={styles.subContainer}>
 

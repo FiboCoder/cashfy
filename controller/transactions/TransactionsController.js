@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Transactions from "../../screens/main/Transactions";
+import Transactions from "../../screens/transactions/Transactions";
 
 const TransactionsController = () =>{
 

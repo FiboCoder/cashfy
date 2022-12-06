@@ -8,9 +8,12 @@ import Constants from 'expo-constants';
 import { LineChart } from "react-native-chart-kit";
 import { RNSVGSvgAndroid } from "react-native-svg";
 import TransactionComponent from "../components/TransactionComponent";
+import { useNavigation } from "@react-navigation/native";
 
 
 const Home = (props) =>{
+
+    const navigation = useNavigation();
 
     return(
 
@@ -22,7 +25,7 @@ const Home = (props) =>{
                     <View style={styles.topContainer}>
 
                         <Text style={styles.usernameText}>Nome do usuário</Text>
-                        <TouchableOpacity style={styles.imageProfileContainer}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}} style={styles.imageProfileContainer}>
 
                             <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
                         </TouchableOpacity>
@@ -101,7 +104,7 @@ const Home = (props) =>{
                     <View style={styles.transactionsTitleContainer}>
                         <Text style={styles.transactionsText}>Transações</Text>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionsStack")}}>
 
                             <MaterialIcons name="arrow-forward-ios" size={24} color="#8000AD" />
 
@@ -121,9 +124,28 @@ const Home = (props) =>{
                 
             </ScrollView>
 
-            <TouchableOpacity style={styles.addTransactionButton}>
-                <Ionicons name="add" size={44} color="white" />
-            </TouchableOpacity>
+            <View onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={ props.addTransactionsOptionsOpen ? styles.addTransactionButtonContainerActive : styles.addTransactionButtonContainer }>
+
+                {
+                    props.addTransactionsOptionsOpen
+                        ?
+                            <View style={styles.transactionsOptionsContainer}>
+                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Earning")}} style={styles.addBtnOptionsEarningContainer}>
+                                    <Text style={styles.addBtnOptionsEarningText}>+ Ganho</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Expense")}}  style={styles.addBtnOptionsExpenseContainer}>
+                                    <Text style={styles.addBtnOptionsExpenseText}>- Gasto</Text>
+                                </TouchableOpacity>
+                            </View>
+                        :
+                            null
+                }
+                
+                <TouchableOpacity onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={styles.addTransactionButton}>
+                    <Ionicons name="add" size={44} color="white" />
+                </TouchableOpacity>
+            </View>
+            
         </>
     );
 }
@@ -277,16 +299,70 @@ const styles = StyleSheet.create({
         color: "#8000AD"
     },
 
-    addTransactionButton:{
+    addTransactionButtonContainer:{
 
         zIndex: 1,
         position: "absolute",
-        width: 70,
-        height: 70,
         right: 0,
         bottom: 0,
         marginRight: 24,
         marginBottom: 24,
+        flexDirection: "column",
+        alignItems: "flex-end",
+    },
+
+    addTransactionButtonContainerActive:{
+
+        zIndex: 1,
+        width: "100%",
+        height: "100%",
+        position: "absolute",
+        paddingRight: 24,
+        paddingBottom: 24,
+        flexDirection: "column",
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        backgroundColor: "rgba(0, 0, 0, 0.4)"
+    },
+
+    transactionsOptionsContainer:{
+
+        marginBottom: 10,
+        elevation: 4,
+        padding: 20,
+        borderRadius: 10,
+        backgroundColor: "white",
+        
+    },
+
+    addBtnOptionsEarningContainer:{
+
+        marginBottom: 20
+    },
+
+    addBtnOptionsEarningText:{
+
+        fontSize: 20,
+        fontWeight: "600",
+        color: "green"
+    },
+
+    addBtnOptionsExpenseContainer:{
+
+
+    },
+
+    addBtnOptionsExpenseText:{
+
+        fontSize: 20,
+        fontWeight: "600",
+        color: "red"
+    },
+
+    addTransactionButton:{
+
+        width: 70,
+        height: 70,
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",

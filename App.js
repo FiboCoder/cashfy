@@ -4,9 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RegisterController from './controller/auth/RegisterController';
 import LoginController from './controller/auth/LoginController';
 import HomeController from './controller/main/HomeController';
-import TransactionsController from './controller/main/TransactionsController';
-import ProfileController from './controller/main/ProfileController';
-import AddTransactionController from './controller/main/AddTransactionController';
+import TransactionsController from './controller/transactions/TransactionsController';
+import ProfileController from './controller/settings/ProfileController';
+import AddTransactionController from './controller/transactions/AddTransactionController';
+import TransactionDetailsController from './controller/transactions/TransactionDetailsController';
+import { Text, View } from 'react-native';
 
 const RegisterStack = () =>{
 
@@ -55,18 +57,27 @@ const AddTransactionStack = () =>{
   );
 }
 
+const TransactionDetails = () =>{
+
+  return(
+
+    <TransactionDetailsController></TransactionDetailsController>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="AddTransactionStack" screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName="TransactionDetailsStack" screenOptions={{headerShown: false}}>
         <Stack.Screen name="RegisterStack" component={RegisterStack}/>
         <Stack.Screen name="LoginStack" component={LoginStack}/>
         <Stack.Screen name="HomeStack" component={HomeStack}/>
         <Stack.Screen name="TransactionsStack" component={TransactionsStack}/>
         <Stack.Screen name="ProfileStack" component={ProfileStack}/>
-        <Stack.Screen name="AddTransactionStack" component={AddTransactionController}/>
+        <Stack.Screen name="AddTransactionStack" component={AddTransactionStack}/>
+        <Stack.Screen name="TransactionDetailsStack" component={TransactionDetails}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

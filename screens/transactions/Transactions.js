@@ -3,15 +3,19 @@ import Constants from 'expo-constants';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import TransactionComponent from "../components/TransactionComponent";
+import { useNavigation } from "@react-navigation/native";
 
 const Transactions = (props) =>{
 
+    const navigation = useNavigation();
     return(
 
         <View style={styles.container}>
 
             <View style={styles.headerContainer}>
-                <MaterialIcons name="arrow-back-ios" size={24} color="#8000AD" />
+                <TouchableOpacity onPress={()=>{navigation.navigate("HomeStack")}}>
+                    <MaterialIcons name="arrow-back-ios" size={24} color="#8000AD" />
+                </TouchableOpacity>
                 <Text style={styles.titleText}>Transações</Text>
             </View>
 

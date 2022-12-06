@@ -4,9 +4,12 @@ import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from "@react-navigation/native";
 
 
 const Profile = () =>{
+
+    const navigation = useNavigation();
 
     return(
 
@@ -14,7 +17,7 @@ const Profile = () =>{
 
             <View style={styles.headerContainer}>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>{navigation.navigate("HomeStack")}}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="white" />
                 </TouchableOpacity>
                 
@@ -46,8 +49,7 @@ const Profile = () =>{
                 <TouchableOpacity style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
-
-                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                        <Ionicons name="ios-image-outline" size={24} color="#8000AD" />
                         <Text style={styles.personalInfoText}>Tema e Cores</Text>
                     </View>
 
