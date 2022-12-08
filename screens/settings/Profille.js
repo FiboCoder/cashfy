@@ -1,15 +1,16 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Constants from 'expo-constants';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 
 const Profile = () =>{
 
     const navigation = useNavigation();
+    const route = useRoute();
 
     return(
 
@@ -26,15 +27,23 @@ const Profile = () =>{
 
             <View style={styles.userInfo}>
 
-                <View style={styles.imageProfileContainer}>
-                    <AntDesign style={styles.icon} name="user" size={44} color="#8000AD"/>
-                </View>
-                <Text style={styles.usernameText}>Nome do usuário</Text>
+                {
+
+                    route.params.userData.imageUrl
+                        ?
+                            <Image style={styles.imageProfileContainer} source={{uri: route.params.userData.imageUrl}}></Image>
+                        :
+                            <View style={styles.imageProfileContainer}>
+                                <AntDesign style={styles.icon} name="user" size={44} color="#8000AD"/>
+                            </View>
+                }
+                
+                <Text style={styles.usernameText}>{route.params.userData.username}</Text>
             </View>
 
             <View style={styles.optionsContainer}>
 
-                <TouchableOpacity style={styles.optionButton}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("PersonalInfoStack")}} style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
                         <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
@@ -93,10 +102,11 @@ const styles = StyleSheet.create({
     titleText:{
 
         flex: 1,
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "white"
+        color: "white",
+        marginRight: 24
     },
 
     userInfo:{

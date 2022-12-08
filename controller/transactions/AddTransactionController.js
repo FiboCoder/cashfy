@@ -2,14 +2,20 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import AddTransaction from "../../screens/transactions/AddTransaction";
+import { Transaction } from "../../utils/Transaction";
 
 const AddTransactionController = (props) =>{
 
     
 
     const [transactionValue, setTransactionValue] = useState("");
-    const [transactionType, setTransactionType] = useState("");
+    const [transactionName, setTransactionName] = useState("");
+    const [transactionDescription, setTransactionDescription] = useState("");
+    const [transactionCategory, setTransactionCategory] = useState("");
     const [transactionDate, setTransactionDate] = useState(new Date());
+
+    const [isLoading, setIsLoading] =useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const route = useRoute();
 
@@ -48,6 +54,67 @@ const AddTransactionController = (props) =>{
         setTransactionValue(fValue);
     }
 
+    const saveTransaction = () =>{
+
+        setIsLoading(true);
+
+        if(transactionValue != ""){
+
+            if(transactionName != ""){
+
+                if(transactionDescription != ""){
+
+                    if(transactionCategory != ""){
+
+                        if(transactionDate != ""){
+
+                            setErrorMessage("");
+
+                            Transaction.saveTransaction(
+                                route.params.userData.email,
+                                route.params.transactionType, 
+                                transactionValue, 
+                                transactionName, 
+                                transactionDescription, 
+                                transactionCategory, 
+                                transactionDate.getTime()
+                            ).then(result=>{
+
+                                setTransactionValue("");
+                                setTransactionName("");
+                                setTransactionDescription("");
+                                setTransactionCategory("");
+                                setTransactionDate(new Date());
+                                setIsLoading(false);
+
+                            });
+                        }else{
+
+                            setIsLoading(false);
+                            setErrorMessage("Selecione a data da transação.");
+                        }
+                    }else{
+            
+                        setIsLoading(false);
+                        setErrorMessage("Selecione a categoria da transação.");
+                    }
+                }else{
+        
+                    setIsLoading(false);
+                    setErrorMessage("Digite uma descrição para a transação.");
+                }
+            }else{
+    
+                setIsLoading(false);
+                setErrorMessage("Digite um nome para a transação.");
+            }
+        }else{
+
+            setIsLoading(false);
+            setErrorMessage("Digite o valor da transação.");
+        }
+    }
+
     return(
 
         <AddTransaction
@@ -55,16 +122,25 @@ const AddTransactionController = (props) =>{
             transactionTypeRoute={route.params.transactionType}
 
             setTransactionValue={setTransactionValue}
-            setTransactionType={setTransactionType}
+            setTransactionName={setTransactionName}
+            setTransactionDescription={setTransactionDescription}
+            setTransactionCategory={setTransactionCategory}
             setTransactionDate={setTransactionDate}
 
             transactionValue={transactionValue}
-            transactionType={transactionType}
+            transactionName={transactionName}
+            transactionDescription={transactionDescription}
+            transactionCategory={transactionCategory}
             transactionDate={transactionDate}
+
+            isLoading={isLoading}
+            errorMessage={errorMessage}
 
             data={data}
             showDatePicker={showDatePicker}
             formatToCurrency={formatToCurrency}
+
+            saveTransaction={saveTransaction}
 
             
         ></AddTransaction>

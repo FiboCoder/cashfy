@@ -1,34 +1,44 @@
 import React from "react";
-import { Dimensions, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 
 import { LineChart } from "react-native-chart-kit";
-import { RNSVGSvgAndroid } from "react-native-svg";
 import TransactionComponent from "../components/TransactionComponent";
 import { useNavigation } from "@react-navigation/native";
-
 
 const Home = (props) =>{
 
     const navigation = useNavigation();
+    console.log(props.transactionsList)
 
     return(
 
         <>
-            <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
+            <View style={styles.container} contentContainerStyle={{alignItems: "center"}}>
 
                 <View style={styles.cardContainer}>
 
                     <View style={styles.topContainer}>
 
-                        <Text style={styles.usernameText}>Nome do usuário</Text>
-                        <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}} style={styles.imageProfileContainer}>
+                        <Text style={styles.usernamePreText}>Olá, </Text>
+                        <Text numberOfLines={1} style={styles.usernameText}>{props.userData.username}</Text>
+                        {
 
-                            <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
-                        </TouchableOpacity>
+                            props.userData.imageUrl
+                                ?
+                                    <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack", {userData: props.userData})}}>
+                                        <Image style={styles.imageProfileContainer} source={{uri: props.userData.imageUrl}}></Image>
+                                    </TouchableOpacity>
+                                    
+                                :
+                                    <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack", {userData: props.userData})}} style={styles.imageProfileContainer}>
+                                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                                    </TouchableOpacity>
+                        }
+                        
                         
                     </View>
 
@@ -111,18 +121,17 @@ const Home = (props) =>{
                         </TouchableOpacity>
                     </View>
 
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
+                    <FlatList 
+                        data={props.transactionsList} 
+                        renderItem={props.renderTransaction} 
+                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                    />
 
                     
                 </View>
 
                 
-            </ScrollView>
+            </View>
 
             <View onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={ props.addTransactionsOptionsOpen ? styles.addTransactionButtonContainerActive : styles.addTransactionButtonContainer }>
 
@@ -178,14 +187,23 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+    },
+
+    usernamePreText:{
+
+        fontSize: 18,
+        fontWeight: "500",
+        color: "white"
     },
 
     usernameText:{
 
+        flex: 1,
         fontSize: 18,
         fontWeight: "700",
-        color: "white"
+        color: "white",
+        textAlign: "left",
+        marginRight: 10
     },
 
     imageProfileContainer:{
@@ -195,7 +213,8 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#EEEEEE"
+        backgroundColor: "#EEEEEE",
+        elevation: 4
     },
 
     phraseText:{

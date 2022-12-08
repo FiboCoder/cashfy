@@ -36,28 +36,28 @@ const RegisterScreen = (props) =>{
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setUsername(text)}} value={props.username} placeholder="Nome de usuário"></TextInput>
+                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setUsername(text)}} placeholder="Nome de usuário"></TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
                     <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#8000AD" />
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setEmail(text)}} value={props.email} placeholder="E-mail"></TextInput>
+                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setEmail(text)}} placeholder="E-mail"></TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} placeholder="Senha"></TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setConfirmPassword(text)}} value={props.confirmPassword} placeholder="Confirmar senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setConfirmPassword(text)}} placeholder="Confirmar senha"></TextInput>
 
                 </View>
                 

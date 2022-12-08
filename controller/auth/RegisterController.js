@@ -90,7 +90,9 @@ const RegisterController = () =>{
 
                                     User.uploadImage(email.toLowerCase(), blob).then(result=>{
 
-                                        User.addUser(result, username, emailtoLowerCase(), password).then(result=>{
+                                        console.log(result)
+
+                                        User.addUser(result, username, email.toLowerCase(), password).then(result=>{
 
                                             setImage("");
                                             setUsername("");

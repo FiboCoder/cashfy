@@ -73,10 +73,11 @@ const styles = StyleSheet.create({
     titleText:{
 
         flex: 1,
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "#8000AD"
+        color: "#8000AD",
+        marginRight: 24
     },
 
     topButtonsContainer:{

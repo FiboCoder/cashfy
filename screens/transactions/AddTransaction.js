@@ -2,6 +2,8 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback
 import Constants from 'expo-constants';
 import { useState } from "react";
 
+import LoadingBar from "../components/LoadingBar";
+
 import { AntDesign } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from "@react-navigation/native";
@@ -34,8 +36,19 @@ const AddTransaction = (props) =>{
 
             <View style={styles.mainContainer}>
 
-                <TextInput style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} placeholder="Nome da transação"></TextInput>
-                <TextInput style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} placeholder="Descrição"></TextInput>
+                <TextInput 
+                    onChangeText={(val)=>{props.setTransactionName(val)}} 
+                    style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} 
+                    placeholder="Nome da transação"
+                    value={props.transactionName}>
+                </TextInput>
+                <TextInput 
+                    onChangeText={(val)=>{props.setTransactionDescription(val)}} 
+                    style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} 
+                    placeholder="Descrição" 
+                    value={props.transactionDescription}>
+                        
+                </TextInput>
                 <SelectList 
 
                     boxStyles={props.transactionTypeRoute == "Earning" ? styles.boxStyleGreen : styles.boxStyleRed} 
@@ -43,7 +56,7 @@ const AddTransaction = (props) =>{
                     inputStyles={styles.inputStyle} 
                     search={false} 
                     placeholder={"Selecionar Opção"} 
-                    setSelected={(val)=>{props.setTransactionType(val)}} 
+                    setSelected={(val)=>{props.setTransactionCategory(val)}} 
                     data={props.data} 
                     save="value">
 
@@ -55,13 +68,17 @@ const AddTransaction = (props) =>{
                     </View>
                 </TouchableWithoutFeedback>
 
+                { props.errorMessage ? <Text style={styles.errorMessageText}>{props.errorMessage}</Text> : null }
+
                 <TouchableOpacity 
-                    onPress={()=>{}} 
+                    onPress={()=>{props.saveTransaction()}} 
                     style={props.transactionTypeRoute == "Earning" ? styles.addButtonGreen : styles.addButtonRed}>
                         <Text style={styles.addButtonText}>Adicionar Transação</Text>
                 </TouchableOpacity>
 
             </View>
+
+            { props.isLoading ? <LoadingBar/> : null}
         </View>
     );
 }
@@ -94,10 +111,11 @@ const styles = StyleSheet.create({
     titleText:{
 
         flex: 1,
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "white"
+        color: "white",
+        marginRight: 30
     },
 
     textInputHeader:{
@@ -217,6 +235,13 @@ const styles = StyleSheet.create({
     inputStyle:{
 
     },
+
+    errorMessageText:{
+
+        alignSelf: "stretch",
+        textAlign: "center",
+        color: "red"
+    },  
 
     addButtonGreen:{
 

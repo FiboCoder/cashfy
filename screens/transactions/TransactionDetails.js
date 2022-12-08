@@ -58,10 +58,11 @@ const styles = StyleSheet.create({
     titleText:{
 
         flex: 1,
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "white"
+        color: "white",
+        marginRight: 24
     },
 
     categoryIconContainer:{

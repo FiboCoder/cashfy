@@ -23,14 +23,14 @@ const LoginScreen = (props) =>{
                 <View style={styles.textInputContainer}>
 
                     <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#8000AD" />
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setEmail(text)}} value={props.email} placeholder="E-mail"></TextInput>
+                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setEmail(text)}} placeholder="E-mail"></TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
                     <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
+                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} placeholder="Senha"></TextInput>
 
                 </View>
                 

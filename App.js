@@ -9,6 +9,10 @@ import ProfileController from './controller/settings/ProfileController';
 import AddTransactionController from './controller/transactions/AddTransactionController';
 import TransactionDetailsController from './controller/transactions/TransactionDetailsController';
 import { Text, View } from 'react-native';
+import PersonalInfoController from './controller/settings/PersonalInfoController';
+import { useState } from 'react';
+import { auth } from './utils/Firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 
 const RegisterStack = () =>{
 
@@ -65,19 +69,56 @@ const TransactionDetails = () =>{
   );
 }
 
+const PersonalInfoStack = () =>{
+
+  return(
+
+    <PersonalInfoController></PersonalInfoController>
+  );
+}
+
 const Stack = createNativeStackNavigator();
 
-function App() {
+const App = () =>{
+
+  const [isAuth, setIsAuth] = useState(false);
+
+  onAuthStateChanged(auth, user=>{
+
+    if(user && user.uid){
+
+      setIsAuth(true);
+    }else{
+
+      setIsAuth(false);
+    }
+  });
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TransactionDetailsStack" screenOptions={{headerShown: false}}>
-        <Stack.Screen name="RegisterStack" component={RegisterStack}/>
-        <Stack.Screen name="LoginStack" component={LoginStack}/>
-        <Stack.Screen name="HomeStack" component={HomeStack}/>
-        <Stack.Screen name="TransactionsStack" component={TransactionsStack}/>
-        <Stack.Screen name="ProfileStack" component={ProfileStack}/>
-        <Stack.Screen name="AddTransactionStack" component={AddTransactionStack}/>
-        <Stack.Screen name="TransactionDetailsStack" component={TransactionDetails}/>
+      <Stack.Navigator initialRouteName={!isAuth ? "LoginStack" : "HomeStack"} screenOptions={{headerShown: false}}>
+
+        {
+
+          !isAuth
+          ?
+          <>
+            <Stack.Screen name="RegisterStack" component={RegisterStack}/>
+            <Stack.Screen name="LoginStack" component={LoginStack}/>
+          </>
+          :
+          <>
+            <Stack.Screen name="RegisterStack" component={RegisterStack}/>
+          <Stack.Screen name="LoginStack" component={LoginStack}/>
+          <Stack.Screen name="HomeStack" component={HomeStack}/>
+          <Stack.Screen name="TransactionsStack" component={TransactionsStack}/>
+          <Stack.Screen name="ProfileStack" component={ProfileStack}/>
+          <Stack.Screen name="AddTransactionStack" component={AddTransactionStack}/>
+          <Stack.Screen name="TransactionDetailsStack" component={TransactionDetails}/>
+          <Stack.Screen name="PersonalInfoStack" component={PersonalInfoStack}/>
+          </>
+        }
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
