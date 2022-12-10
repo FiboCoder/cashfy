@@ -7,6 +7,7 @@ import LoadingBar from "../components/LoadingBar";
 import { AntDesign } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
 
 const AddTransaction = (props) =>{
@@ -30,7 +31,7 @@ const AddTransaction = (props) =>{
                 keyboardType="number-pad"  
                 numberOfLines={1} style={styles.textInputHeader} 
                 onChangeText={(val)=>{props.formatToCurrency(val)}} 
-                placeholder="R$0,00" value={ "R$"+props.transactionValue }>
+                placeholder="R$0,00" value={ "R$"+Format.intToReal(props.transactionValue) }>
 
             </TextInput>
 

@@ -1,14 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
 const TransactionComponent = (props) =>{
+
+    console.log(Format.timeStampToDate(props.transaction.date))
 
     const navigation = useNavigation();
 
     return(
 
-        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack")}} style={styles.container}>
+        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack", {transaction: props.transaction, route: props.route})}} style={styles.container}>
 
             <View style={styles.subContainer}>
 
@@ -24,7 +27,7 @@ const TransactionComponent = (props) =>{
             </View>
             
 
-            <Text style={props.transaction.type == "Earning" ? styles.priceTextGreen : styles.priceTextRed}>{"+ R$"+props.transaction.value}</Text>
+            <Text style={props.transaction.type == "Earning" ? styles.priceTextGreen : styles.priceTextRed}>{props.transaction.type == "Earning" ? "+ R$" : "- R$"}{props.transaction.value}</Text>
         </TouchableOpacity>
     );
 }

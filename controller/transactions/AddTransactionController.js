@@ -2,6 +2,7 @@ import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 import { useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import AddTransaction from "../../screens/transactions/AddTransaction";
+import { Format } from "../../utils/Format";
 import { Transaction } from "../../utils/Transaction";
 
 const AddTransactionController = (props) =>{
@@ -48,10 +49,10 @@ const AddTransactionController = (props) =>{
 
     const formatToCurrency = (value) => {
 
-        let fValue = value.replace(/\D/g, "");
-        fValue = fValue.replace(/(\d)(\d{2})$/, "$1,$2");
-        fValue = fValue.replace(/(?=(\d{3})+(\D))\B/g, ".");
-        setTransactionValue(fValue);
+        setTransactionValue(value);
+
+        console.log(Format.intToReal(value));
+        console.log(Format.intToCurrency(value));
     }
 
     const saveTransaction = () =>{
@@ -73,7 +74,7 @@ const AddTransactionController = (props) =>{
                             Transaction.saveTransaction(
                                 route.params.userData.email,
                                 route.params.transactionType, 
-                                transactionValue, 
+                                Format.intToCurrency(transactionValue), 
                                 transactionName, 
                                 transactionDescription, 
                                 transactionCategory, 

@@ -2,9 +2,10 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
-const TransactionDetails = () =>{
+const TransactionDetails = (props) =>{
 
     const navigation = useNavigation();
 
@@ -14,7 +15,7 @@ const TransactionDetails = () =>{
 
             <View style={styles.headerContainer}>
 
-                <TouchableOpacity onPress={()=>{navigation.navigate("HomeStack")}}>
+                <TouchableOpacity style={{padding: 10}} onPress={()=>{props.route == "Home" ? navigation.navigate("HomeStack") : navigation.navigate("TransactionsStack")}}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="white" />
                 </TouchableOpacity>
 
@@ -25,10 +26,12 @@ const TransactionDetails = () =>{
                     <SimpleLineIcons name="handbag" size={28} color="#8000AD" />
             </View>
 
-            <Text style={styles.transactionNameText}>Salário</Text>
-            <Text style={styles.transactionCategoryText}>Categoria</Text>
-            <Text style={styles.transactionValueText}>R$3.000,00</Text>
-            <Text style={styles.transactionDescriptionText}>Salário Mulher Magnética</Text>
+            <Text style={styles.transactionDateText}>{Format.timeStampToDate(props.transaction.date)}</Text>
+
+            <Text style={styles.transactionNameText}>{props.transaction.name}</Text>
+            <Text style={styles.transactionCategoryText}>{props.transaction.category}</Text>
+            <Text style={styles.transactionValueText}>{props.transaction.type == "Earning" ? "+ R$" : "- R$"}{props.transaction.value}</Text>
+            <Text style={styles.transactionDescriptionText}>{props.transaction.description}</Text>
         </View>
     );
     
@@ -96,6 +99,14 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontSize: 30,
         fontWeight: "700",
+        color: "white"
+    },
+
+    transactionDateText:{
+
+        marginBottom: 30,
+        fontSize: 16,
+        fontWeight: "600",
         color: "white"
     },
 

@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Constants from 'expo-constants';
 
 import { MaterialIcons } from '@expo/vector-icons';
@@ -8,6 +8,53 @@ import { useNavigation } from "@react-navigation/native";
 const Transactions = (props) =>{
 
     const navigation = useNavigation();
+
+    const renderFlatList = () =>{
+
+        let earning = props.transactionsList.filter(transaction=>{
+
+            return transaction.type == "Earning";
+        });
+
+        let spendings = props.transactionsList.filter(transaction=>{
+
+            return transaction.type == "Expense";
+        });
+
+        switch(props.pressedButton){
+
+            case "Balance":
+            return <FlatList
+                        data={props.transactionsList}
+                        renderItem={props.renderTransaction}
+                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                    />
+
+            case "Earnings":
+
+            return <FlatList
+                        data={earning}
+                        renderItem={props.renderTransaction}
+                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                    />
+
+            case "Expenses":
+
+            return <FlatList
+                        data={spendings}
+                        renderItem={props.renderTransaction}
+                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                    />
+
+            default:
+            return <FlatList
+                        data={props.transactionsList}
+                        renderItem={props.renderTransaction}
+                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                    />
+        }
+
+    }
     return(
 
         <View style={styles.container}>
@@ -27,25 +74,16 @@ const Transactions = (props) =>{
                 <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
                     <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Todos</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
-                    <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
+                <TouchableOpacity onPress={()=>{props.setPressedButton("Expenses")}} style={props.pressedButton === "Expenses" ? styles.activeButton : styles.inactiveButton}>
+                    <Text style={props.pressedButton === "Expenses" ? styles.activeText : styles.inactiveText}>Gastos</Text>
                 </TouchableOpacity>
             </View>
 
-            <ScrollView style={styles.listContainer}>
+            {
 
-                <TransactionComponent type={"red"}/>
-                <TransactionComponent type={"green"}/>
-                <TransactionComponent type={"red"}/>
-                <TransactionComponent type={"green"}/>
-                <TransactionComponent type={"red"}/>
-                <TransactionComponent type={"green"}/>
-                <TransactionComponent type={"red"}/>
-                <TransactionComponent type={"green"}/>
-            
-                <TransactionComponent type={"red"}/>
-                <TransactionComponent type={"green"}/>
-            </ScrollView>
+                
+                renderFlatList()
+            }
 
         </View>
     );
@@ -56,6 +94,7 @@ const styles = StyleSheet.create({
     container:{
 
         flex: 1,
+        flexDirection: "column",
         backgroundColor: "white",
         paddingTop: Constants.statusBarHeight + 30
     },

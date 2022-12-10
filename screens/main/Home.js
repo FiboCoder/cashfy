@@ -8,16 +8,16 @@ import Constants from 'expo-constants';
 import { LineChart } from "react-native-chart-kit";
 import TransactionComponent from "../components/TransactionComponent";
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
 const Home = (props) =>{
 
     const navigation = useNavigation();
-    console.log(props.transactionsList)
 
     return(
 
         <>
-            <View style={styles.container} contentContainerStyle={{alignItems: "center"}}>
+            <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
 
                 <View style={styles.cardContainer}>
 
@@ -44,7 +44,7 @@ const Home = (props) =>{
 
                     <View>
                         <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
-                        <Text style={styles.balanceTextCard}>R$10.029.267,89</Text>
+                        <Text style={styles.balanceTextCard}>{"R$ "+Format.intToReal(props.total.toFixed(2))}</Text>
                     </View>
                 </View>
 
@@ -54,7 +54,7 @@ const Home = (props) =>{
                         <Text style={props.pressedButton === "Earnings" ? styles.activeText : styles.inactiveText}>Ganhos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
-                        <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Todos</Text>
+                        <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Receita</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
                         <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
@@ -74,7 +74,8 @@ const Home = (props) =>{
                             Math.random() * 100,
                             Math.random() * 100,
                             Math.random() * 100,
-                            Math.random() * 100
+                            Math.random() * 100,
+                            Math.random() * 100,
                         ]
                         }
                     ]
@@ -97,7 +98,7 @@ const Home = (props) =>{
                         borderRadius: 16
                     },
                     propsForDots: {
-                        r: "6",
+                        r: "",
                         strokeWidth: "2",
                         stroke: "#8000AD"
                     }
@@ -131,7 +132,7 @@ const Home = (props) =>{
                 </View>
 
                 
-            </View>
+            </ScrollView>
 
             <View onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={ props.addTransactionsOptionsOpen ? styles.addTransactionButtonContainerActive : styles.addTransactionButtonContainer }>
 

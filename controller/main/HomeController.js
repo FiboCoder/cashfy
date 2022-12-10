@@ -12,6 +12,7 @@ const HomeController = () =>{
     const [addTransactionsOptionsOpen, setAddTransactionsOptionsOpen] = useState(false);
     const [userData, setUserData] = useState([]);
     const [transactionsList, setTransactionsList] = useState([]);
+    const [total, setTotal] = useState(0);
 
     const navigation = useNavigation();
 
@@ -41,77 +42,47 @@ const HomeController = () =>{
                     
                     setUserData(userData.data());
                 });
+
+                const transactionsQuery = query(
+                    collection(db, "users", user.email, "transactions"), 
+                    orderBy("date", "desc"), 
+                    limit(10));
+                getDocs(transactionsQuery).then(transactions=>{
+    
+                    let transactionsListArray = [];
+                    let sum = 0;
+
+                    if(!transactions.empty){
+    
+                        transactions.forEach(transaction=>{
+    
+                            if(transaction.data().type === "Earning"){
+
+                                sum = sum + parseFloat(transaction.data().value);
+                                console.log(transaction.data().value)
+                            }else{
+
+                                sum = sum - parseFloat(transaction.data().value);
+                            }
+                            transactionsListArray.push(transaction.data());
+                        });
+
+                        setTotal(sum);
+                        setTransactionsList(transactionsListArray);
+                    }
+                }).catch(err=>{
+    
+                    setTransactionsList(transactionsList);
+                });
             }
         });
-    },[]);
-
-    useEffect(()=>{
-
-        if(userData.email){
-
-            const transactionsQuery = query(
-                collection(db, "users", userData.email, "transactions"), 
-                orderBy("date", "asc"), 
-                limit(10));
-            getDocs(transactionsQuery).then(transactions=>{
-
-                let transactionsListArray = [];
-
-
-                if(!transactions.empty){
-
-                    transactions.forEach(transaction=>{
-
-                        console.log(transaction.data().date.toTime())
-
-                        transactionsListArray(transaction.data());
-                    });
-
-                    setTransactionsList(transactionsListArray);
-                }
-            }).catch(err=>{
-
-                setTransactionsList(transactionsList)
-            });
-        }else{
-
-            onAuthStateChanged(auth, user=>{
-
-                if(user){
-
-                    const transactionsQuery = query(
-                        collection(db, "users", user.email, "transactions"), 
-                        orderBy("date", "asc"), 
-                        limit(10));
-                    getDocs(transactionsQuery).then(transactions=>{
-        
-                        let transactionsListArray = [];
-        
-                        if(!transactions.empty){
-        
-                            transactions.forEach(transaction=>{
-        
-                                transactionsListArray.push(transaction.data());
-                            });
-
-                            console.log("ARRAYYYYYYYYY " + transactionsListArray)
-        
-                            setTransactionsList(transactionsListArray);
-                        }
-                    }).catch(err=>{
-        
-                        setTransactionsList(transactionsList);
-                    });
-                }
-            });
-        }
     },[]);
 
     const renderTransaction = ({item}) =>{
 
         
 
-        return <TransactionComponent transaction={item}></TransactionComponent>;
+        return <TransactionComponent transaction={item} route={"Home"}></TransactionComponent>;
     }
 
     return(
@@ -124,6 +95,7 @@ const HomeController = () =>{
 
             pressedButton={pressedButton}
             addTransactionsOptionsOpen={addTransactionsOptionsOpen}
+            total={total}
 
             userData={userData}
 
