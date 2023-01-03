@@ -16,14 +16,14 @@ const TransactionDetails = (props) =>{
             <View style={styles.headerContainer}>
 
                 <TouchableOpacity style={{padding: 10}} onPress={()=>{props.route == "Home" ? navigation.navigate("HomeStack") : navigation.navigate("TransactionsStack")}}>
-                    <MaterialIcons name="arrow-back-ios" size={24} color="white" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color="#1D1D1D" />
                 </TouchableOpacity>
 
                 <Text style={styles.titleText}>Detalhes da Transação</Text>
             </View>
 
             <View style={styles.categoryIconContainer}>
-                    <SimpleLineIcons name="handbag" size={28} color="#8000AD" />
+                    <SimpleLineIcons name="handbag" size={28} color="white" />
             </View>
 
             <Text style={styles.transactionDateText}>{Format.timeStampToDate(props.transaction.date)}</Text>
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#8000AD"
+        backgroundColor: "white"
     },
 
     headerContainer:{
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "white",
+        color: "#1D1D1D",
         marginRight: 24
     },
 
@@ -76,14 +76,15 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 50,
-        backgroundColor: "white"
+        backgroundColor: "#1D1D1D",
+        elevation: 4
     },
 
     transactionNameText:{
 
         fontSize: 24,
         fontWeight: "700",
-        color: "white"
+        color: "#1D1D1D"
     },
 
     transactionCategoryText:{
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         fontSize: 14,
         fontWeight: "500",
-        color: "lightgray"
+        color: "gray"
     },
 
     transactionValueText:{
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontSize: 30,
         fontWeight: "700",
-        color: "white"
+        color: "#FF7E00"
     },
 
     transactionDateText:{
@@ -107,14 +108,14 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         fontSize: 16,
         fontWeight: "600",
-        color: "white"
+        color: "#1D1D1D"
     },
 
     transactionDescriptionText:{
 
         fontSize: 14,
         fontWeight: "600",
-        color: "lightgray"
+        color: "gray"
     }
 });
 

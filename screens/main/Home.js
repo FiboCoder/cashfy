@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,6 +13,43 @@ import { Format } from "../../utils/Format";
 const Home = (props) =>{
 
     const navigation = useNavigation();
+
+    //const [data, setData] = useState([]);
+
+    /*let data = [
+
+        parseInt(props.transactionsListToChart[props.transactionsListToChart.length-1]),
+        parseInt(props.transactionsListToChart[props.transactionsListToChart.length-2]),
+        parseInt(props.transactionsListToChart[(props.transactionsListToChart.length -1) /2]),
+        parseInt(props.transactionsListToChart[1]),
+        parseInt(props.transactionsListToChart[0]),
+
+    ]*/
+
+    /*if(props.transactionsListToChart){
+
+        if(props.pressedButton == "Earnings"){
+
+            let arrayType = props.transactionsListToChart;
+            arrayType = arrayType.filter(item=>{
+
+                return item.type == "Earning";
+            })
+
+            if(arrayType > -1){
+
+                data = [
+
+                    parseFloat(arrayType[arrayType.length-1]),
+                    parseFloat(arrayType[arrayType.length-2]),
+                    parseFloat(arrayType[(arrayType.length -1) /2]),
+                    parseFloat(arrayType[1]),
+                    parseFloat(arrayType[0]),
+            
+                ]
+            }
+        }
+    }*/
 
     return(
 
@@ -35,7 +72,7 @@ const Home = (props) =>{
                                     
                                 :
                                     <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack", {userData: props.userData})}} style={styles.imageProfileContainer}>
-                                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                                        <AntDesign style={styles.icon} name="user" size={24} color="#1D1D1D"/>
                                     </TouchableOpacity>
                         }
                         
@@ -48,9 +85,36 @@ const Home = (props) =>{
                     </View>
                 </View>
 
+
                 <View style={styles.topButtonsContainer}>
 
-                    <TouchableOpacity onPress={()=>{props.setPressedButton("Earnings")}} style={props.pressedButton === "Earnings" ? styles.activeButton : styles.inactiveButton}>
+                    <View style={styles.transactionsTitleContainer}>
+                        <Text style={styles.transactionsText}>Resumo de Transações</Text>
+                    </View>
+
+                <View style={styles.topButtonsSubContainer}>
+
+                    <View style={styles.topBox}>
+                        <Text style={styles.topBoxTitle}>Ganhos</Text>
+                        <Text style={styles.topBoxValue}>{"R$" + Format.intToReal(props.totalEarnings.toFixed(2))}</Text>
+                    </View>
+
+                    <View style={styles.topBox}>
+                        <Text style={styles.topBoxTitle}>Gastos</Text>
+                        <Text style={styles.topBoxValue}>{"R$" + Format.intToReal(props.totalSpendings.toFixed(2))}</Text>
+
+                    </View>
+
+                </View>
+
+                <View style={styles.bottomButtonsContainer}>
+
+                    <TouchableOpacity onPress={()=>{props.setChartTime("week")}}><Text style={props.chartTime == "week" ? styles.chartTimeTextActive : styles.chartTimeText}>Semana</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.setChartTime("month")}}><Text style={props.chartTime == "month" ? styles.chartTimeTextActive : styles.chartTimeText}>Mês</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{props.setChartTime("year")}}><Text style={props.chartTime == "year" ? styles.chartTimeTextActive : styles.chartTimeText}>Ano</Text></TouchableOpacity>
+                </View>
+
+                    {/*<TouchableOpacity onPress={()=>{props.setPressedButton("Earnings")}} style={props.pressedButton === "Earnings" ? styles.activeButton : styles.inactiveButton}>
                         <Text style={props.pressedButton === "Earnings" ? styles.activeText : styles.inactiveText}>Ganhos</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
@@ -58,56 +122,63 @@ const Home = (props) =>{
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
                         <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity>*/}
                 </View>
 
                 <View style={styles.chartContainer}>
 
-                <LineChart
-                    data={{
-                    labels: ["1", "5", "10", "15", "20", "25", "30"],
-                    datasets: [
-                        {
-                        data: [
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                        ]
-                        }
-                    ]
-                    }}
-                    width={Dimensions.get("window").width} // from react-native
-                    height={220}
-                    yAxisLabel="R$"
-                    yAxisSuffix="k"
-                    yAxisInterval={1} // optional, defaults to 1
-                    chartConfig={{
-                    backgroundColor: "#FFFFFF",
-                    backgroundGradientFrom: "#FFF",
-                    backgroundGradientTo: "#FFF",
-                    fillShadowGradientFrom: "#8000AD",
-                    fillShadowGradientTo: "#AF73C4",
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `#8000AD`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    style: {
-                        borderRadius: 16
-                    },
-                    propsForDots: {
-                        r: "",
-                        strokeWidth: "2",
-                        stroke: "#8000AD"
-                    }
-                    }}
-                    bezier
-                    style={{
-                    marginVertical: 8,
-                    }}
-                />
+                {/*
+                props.transactionsListToChart.length > -1
+                    ?
+                    
+                        <LineChart
+                            data={{
+                            labels: ["1", "5", "10", "15", "20", "25", "30"],
+                            datasets: [
+                                {
+                                    data: [
+
+                                        parseInt(props.transactionsListToChart[props.transactionsListToChart.length-1]),
+                                        parseInt(props.transactionsListToChart[props.transactionsListToChart.length-2]),
+                                        parseInt(props.transactionsListToChart[(props.transactionsListToChart.length -1) /2]),
+                                        parseInt(props.transactionsListToChart[1]),
+                                        parseInt(props.transactionsListToChart[0]),
+                                    ]
+                                }
+                            ]
+                            }}
+                            width={Dimensions.get("window").width} // from react-native
+                            height={220}
+                            yAxisLabel="R$"
+                            yAxisSuffix="k"
+                            yAxisInterval={1} // optional, defaults to 1
+                            chartConfig={{
+                            backgroundColor: "#FFFFFF",
+                            backgroundGradientFrom: "#FFF",
+                            backgroundGradientTo: "#FFF",
+                            fillShadowGradientFrom: "#1D1D1D",
+                            fillShadowGradientTo: "#CBCBCB",
+                            decimalPlaces: 2, // optional, defaults to 2dp
+                            color: (opacity = 1 ) => `#1D1D1D`,
+                            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                            style: {
+                                borderRadius: 16
+                            },
+                            propsForDots: {
+                                r: "6",
+                                strokeWidth: "2",
+                                stroke: "#1D1D1D"
+                            }
+                            }}
+                            bezier
+                            style={{
+                            marginVertical: 8,
+                            }}
+                        />
+
+                    :
+                        null
+                */}
                 </View>
 
                 <View style={styles.transactionsContainer}>
@@ -117,7 +188,7 @@ const Home = (props) =>{
 
                         <TouchableOpacity onPress={()=>{navigation.navigate("TransactionsStack")}}>
 
-                            <MaterialIcons name="arrow-forward-ios" size={24} color="#8000AD" />
+                            <MaterialIcons name="arrow-forward-ios" size={24} color="#1D1D1D" />
 
                         </TouchableOpacity>
                     </View>
@@ -125,7 +196,7 @@ const Home = (props) =>{
                     <FlatList 
                         data={props.transactionsList} 
                         renderItem={props.renderTransaction} 
-                        keyExtractor={item => props.transactionsList.indexOf(item)}
+                        keyExtractor={item => props.setTransactionsListLimited.indexOf(item)}
                     />
 
                     
@@ -177,10 +248,10 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         marginRight: 24,
         marginBottom: 50,
-        backgroundColor: "#8000AD",
+        backgroundColor: "#1D1D1D",
         borderRadius: 24,
         padding: 20,
-        elevation: 30,
+        elevation: 10,
     },
 
     topContainer:{
@@ -202,7 +273,7 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 18,
         fontWeight: "700",
-        color: "white",
+        color: "#ff7E00",
         textAlign: "left",
         marginRight: 10
     },
@@ -228,7 +299,7 @@ const styles = StyleSheet.create({
 
         fontSize: 24,
         fontWeight: "700",
-        color: "white"
+        color: "#ff7E00"
     },
 
 
@@ -245,19 +316,44 @@ const styles = StyleSheet.create({
         marginRight: 24,
         marginBottom: 30,
         alignSelf: "stretch",
+        
+    },
+
+    topButtonsSubContainer:{
+
+        marginBottom: 30,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#EEEEEE",
-        borderRadius: 100,
-        padding: 6,
-        paddingLeft: 30,
-        paddingRight: 30,
+        justifyContent: "space-between",
+    },
+
+    topBox:{
+
+        alignItems: "center",
+        borderRadius: 14,
+        padding: 30,
+        paddingLeft: 50,
+        paddingRight: 50,
+        backgroundColor: "#282828",
         elevation: 4
+    },
+
+    topBoxTitle:{
+
+        color: "white",
+        marginBottom: 10
+    },
+
+    topBoxValue:{
+
+        color: "#FF7E00",
+        fontWeight: "700"
     },
 
     inactiveButton:{
 
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: "#EEEEEE",
         padding: 12,
         paddingLeft: 26,
@@ -266,7 +362,9 @@ const styles = StyleSheet.create({
     },
     activeButton:{
 
-        backgroundColor: "#8000AD",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#1D1D1D",
         padding: 12,
         paddingLeft: 26,
         paddingRight: 26,
@@ -278,7 +376,7 @@ const styles = StyleSheet.create({
 
         fontWeight: "700",
         fontSize: 18,
-        color: "#8000AD"
+        color: "#1D1D1D"
     },
     activeText:{
 
@@ -290,7 +388,32 @@ const styles = StyleSheet.create({
     chartContainer:{
 
         alignSelf: "stretch",
-        marginBottom: 30,
+        marginBottom: 10,
+    },
+
+    bottomButtonsContainer:{
+
+        flex: 1,
+        marginLeft: 24,
+        marginRight: 24,
+        marginBottom: 20,
+        flexDirection: "row",
+        alignSelf: "stretch",
+        alignItems: "center",
+        justifyContent: "space-around",
+    },
+
+    chartTimeText:{
+
+        fontSize: 18,
+        fontWeight: "500",
+    },
+
+    chartTimeTextActive:{
+
+        fontSize: 18,
+        fontWeight: "600",
+        color: "#ff7E00"
     },
 
     transactionsContainer:{
@@ -316,7 +439,7 @@ const styles = StyleSheet.create({
 
         fontSize: 22,
         fontWeight: "700",
-        color: "#8000AD"
+        color: "#1D1D1D"
     },
 
     addTransactionButtonContainer:{
@@ -386,7 +509,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#8000AD",
+        backgroundColor: "#ff7E00",
         elevation: 8
     }
 

@@ -5,8 +5,6 @@ import { Format } from "../../utils/Format";
 
 const TransactionComponent = (props) =>{
 
-    console.log(Format.timeStampToDate(props.transaction.date))
-
     const navigation = useNavigation();
 
     return(

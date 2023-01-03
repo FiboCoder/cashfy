@@ -18,19 +18,19 @@ const PersonalInfo = (props) =>{
             <View style={styles.headerContainer}>
 
                 <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}}>
-                    <MaterialIcons name="arrow-back-ios" size={24} color="#8000AD" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color="#1D1D1D" />
                 </TouchableOpacity>
 
                 <Text style={styles.titleText}>Informações Pessoais</Text>
             </View>
 
             <View style={styles.imageProfileContainer}>
-                <AntDesign name="user" size={44} color="#8000AD"/>
+                <AntDesign name="user" size={44} color="white"/>
             </View>
 
             <View style={styles.infoBoxContainer}>
 
-                <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                <AntDesign style={styles.icon} name="user" size={24} color="#ff7E00"/>
                 {
 
                     !props.usernameClicked
@@ -55,14 +55,14 @@ const PersonalInfo = (props) =>{
 
             <View style={styles.infoBoxContainer}>
 
-                <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#8000AD" />
+                <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#ff7E00" />
                 <Text style={styles.infoText}>steave@steave.com</Text>
 
             </View>
 
             <View style={styles.infoBoxContainer}>
 
-                <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
+                <AntDesign style={styles.icon} name="lock" size={26} color="#ff7E00"/>
                 {
 
                     !props.passwordClicked
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingLeft: 24,
         paddingRight: 24,
+        backgroundColor: "white"
     },
 
     headerContainer:{
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "600",
         textAlign: "center",
-        color: "#8000AD",
+        color: "#1D1D1D",
         marginRight: 24
     },
 
@@ -124,7 +125,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 100,
-        backgroundColor: "#e6e6e6",
+        backgroundColor: "#1D1D1D",
         marginBottom: 30,
         elevation: 8
     },
@@ -134,7 +135,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: "stretch",
-        backgroundColor: "#F5D9FF",
+        backgroundColor: "white",
         padding: 16,
         borderRadius: 30,
         marginBottom: 14

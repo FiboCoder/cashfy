@@ -46,23 +46,23 @@ const Profile = () =>{
                 <TouchableOpacity onPress={()=>{navigation.navigate("PersonalInfoStack")}} style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
-                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                        <AntDesign style={styles.icon} name="user" size={24} color="#ff7E00"/>
                         <Text style={styles.personalInfoText}>Informações Pessoais</Text>
                     </View>
                     
 
-                    <MaterialIcons name="arrow-forward-ios" size={22} color="#8000AD" />
+                    <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
 
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
-                        <Ionicons name="ios-image-outline" size={24} color="#8000AD" />
+                        <Ionicons name="ios-image-outline" size={24} color="#ff7E00" />
                         <Text style={styles.personalInfoText}>Tema e Cores</Text>
                     </View>
 
-                    <MaterialIcons name="arrow-forward-ios" size={22} color="#8000AD" />
+                    <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
                     
                 </TouchableOpacity>
 
@@ -71,7 +71,7 @@ const Profile = () =>{
 
             <TouchableOpacity style={styles.logoutButton}>
 
-                <Ionicons style={styles.icon} name="exit-outline" size={24} color="#8000AD" />
+                <Ionicons style={styles.icon} name="exit-outline" size={24} color="#ff7E00" />
                 <Text style={styles.personalInfoText}>Sair</Text>
                     
             </TouchableOpacity>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: "column",
-        backgroundColor: "#8000AD",
+        backgroundColor: "#1D1D1D",
         paddingLeft: 24,
         paddingRight: 24
     },
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
 
         fontSize: 20,
         fontWeight: "700",
-        color: "white"
+        color: "#1D1D1D"
     },
 
     optionsContainer:{
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: "stretch",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "white",
         borderRadius: 30,
         padding: 12,
         marginBottom: 20,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     personalInfoText:{
 
         marginLeft: 10,
-        color: "#8000AD"
+        color: "#1D1D1D"
     },
 
     logoutButton:{
@@ -173,13 +173,14 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         marginBottom: 24,
         flexDirection: "row",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "white",
         borderRadius: 30,
         alignItems: "center",
         paddingTop: 8,
         paddingBottom: 8,
         paddingLeft: 20,
         paddingRight: 20,
+        elevation: 3
     }
 });
 
