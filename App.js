@@ -9,6 +9,15 @@ import ProfileController from './controller/settings/ProfileController';
 import AddTransactionController from './controller/transactions/AddTransactionController';
 import TransactionDetailsController from './controller/transactions/TransactionDetailsController';
 import { Text, View } from 'react-native';
+import SplashScreen from './screens/main/SplashScreen';
+
+const SplashStack = () =>{
+
+  return(
+
+    <SplashScreen></SplashScreen>
+  );
+}
 
 const RegisterStack = () =>{
 
@@ -70,7 +79,8 @@ const Stack = createNativeStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="TransactionDetailsStack" screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName="HomeStack" screenOptions={{headerShown: false}}>
+        <Stack.Screen name="SplashStack" component={SplashStack}/>
         <Stack.Screen name="RegisterStack" component={RegisterStack}/>
         <Stack.Screen name="LoginStack" component={LoginStack}/>
         <Stack.Screen name="HomeStack" component={HomeStack}/>

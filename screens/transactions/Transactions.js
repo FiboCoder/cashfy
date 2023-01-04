@@ -14,7 +14,7 @@ const Transactions = (props) =>{
 
             <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={()=>{navigation.navigate("HomeStack")}}>
-                    <MaterialIcons name="arrow-back-ios" size={24} color="#8000AD" />
+                    <MaterialIcons name="arrow-back-ios" size={24} color="#1D1D1D" />
                 </TouchableOpacity>
                 <Text style={styles.titleText}>Transações</Text>
             </View>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
         fontSize: 26,
         fontWeight: "600",
         textAlign: "center",
-        color: "#8000AD"
+        color: "#1D1D1D"
     },
 
     topButtonsContainer:{
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#EEEEEE",
-        borderRadius: 100,
+        backgroundColor: "#565656",
+        borderRadius: 8,
         padding: 6,
         paddingLeft: 30,
         paddingRight: 30,
@@ -98,19 +98,19 @@ const styles = StyleSheet.create({
 
     inactiveButton:{
 
-        backgroundColor: "#EEEEEE",
-        padding: 12,
+        backgroundColor: "#565656",
+        padding: 8,
         paddingLeft: 26,
         paddingRight: 26,
-        borderRadius: 20,
+        borderRadius: 8,
     },
     activeButton:{
 
-        backgroundColor: "#8000AD",
-        padding: 12,
+        backgroundColor: "#FF7E00",
+        padding: 8,
         paddingLeft: 26,
         paddingRight: 26,
-        borderRadius: 30,
+        borderRadius: 8,
         elevation: 6
     },
 
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 
         fontWeight: "700",
         fontSize: 18,
-        color: "#8000AD"
+        color: "white"
     },
     activeText:{
 

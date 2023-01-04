@@ -5,6 +5,7 @@ import { useState } from "react";
 import { AntDesign } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from "@react-navigation/native";
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 const AddTransaction = (props) =>{
@@ -34,8 +35,26 @@ const AddTransaction = (props) =>{
 
             <View style={styles.mainContainer}>
 
-                <TextInput style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} placeholder="Nome da transação"></TextInput>
-                <TextInput style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed} placeholder="Descrição"></TextInput>
+                <Text style={styles.fieldTitleText}>Título</Text>
+
+                <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
+
+                    <MaterialIcons name="title" size={24} color="#565656" />
+                    <TextInput style={styles.textInputMain} placeholder="Títuo"></TextInput>
+
+                </View>
+
+                <Text style={styles.fieldTitleText}>Descrição</Text>
+
+                <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
+
+                    <MaterialIcons name="subtitles" size={24} color="#565656" />
+                    <TextInput style={styles.textInputMain} placeholder="Descrição"></TextInput>
+
+                </View>
+
+                <Text style={styles.fieldTitleText}>Categoria</Text>
+
                 <SelectList 
 
                     boxStyles={props.transactionTypeRoute == "Earning" ? styles.boxStyleGreen : styles.boxStyleRed} 
@@ -48,17 +67,20 @@ const AddTransaction = (props) =>{
                     save="value">
 
                 </SelectList>
-                <TouchableWithoutFeedback onPress={props.showDatePicker} style={props.transactionTypeRoute == "Earning" ?  styles.textInputGreen : styles.textInputRed}>
+
+                <Text style={styles.fieldTitleText}>Data</Text>
+
+                <TouchableWithoutFeedback onPress={props.showDatePicker} style={props.transactionTypeRoute == "Earning" ?  styles.textInputMain : styles.textInputMain}>
                     <View style={props.transactionTypeRoute == "Earning" ?  styles.dateButtonGreen : styles.dateButtonRed}>
-                        <Text placeholder="Data da transação">{props.transactionDate.toLocaleDateString()}</Text>
-                        <AntDesign name="calendar" size={24} color="black" />
+                        <AntDesign name="calendar" size={24} color="#565656" />
+                        <Text style={styles.transactionDateText} placeholder="Data da transação">{props.transactionDate.toLocaleDateString()}</Text>
                     </View>
                 </TouchableWithoutFeedback>
 
                 <TouchableOpacity 
                     onPress={()=>{}} 
                     style={props.transactionTypeRoute == "Earning" ? styles.addButtonGreen : styles.addButtonRed}>
-                        <Text style={styles.addButtonText}>Adicionar Transação</Text>
+                        <AntDesign name="check" size={24} color="white" />
                 </TouchableOpacity>
 
             </View>
@@ -86,7 +108,7 @@ const styles = StyleSheet.create({
 
         marginLeft: 24,
         marginRight: 24,
-        marginBottom: 80,
+        marginBottom: 60,
         flexDirection: "row",
         alignItems: "center"
     },
@@ -94,7 +116,7 @@ const styles = StyleSheet.create({
     titleText:{
 
         flex: 1,
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: "600",
         textAlign: "center",
         color: "white"
@@ -116,48 +138,68 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         alignItems: "stretch",
         backgroundColor: "white",
-        borderTopLeftRadius: 24,
-        borderTopRightRadius: 24,
-        paddingTop: 50,
-        padding: 24
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        paddingTop: 40,
+        padding: 24,
+        elevation: 20
     },
 
-    textInputGreen:{
+    fieldTitleText:{
 
+        fontWeight: "700",
+        fontSize: 18,
+        marginBottom: 10
+    },
+
+    textInputContainerGreen:{
+
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: "stretch",
         marginBottom: 14,
         borderWidth: 1,
         borderColor: "green",
         paddingTop: 10,
         paddingBottom: 10,
+        paddingLeft: 12,
         padding: 18,
-        borderRadius: 30,
-
+        borderRadius: 8,
     },
 
-    textInputRed:{
+    textInputContainerRed:{
 
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: "stretch",
         marginBottom: 14,
         borderWidth: 1,
         borderColor: "red",
         paddingTop: 10,
         paddingBottom: 10,
+        paddingLeft: 12,
         padding: 18,
-        borderRadius: 30,
+        borderRadius: 8,
+    },
 
+    textInputMain:{
+
+        flex: 1,
+        marginLeft: 10
     },
 
     dateButtonGreen:{
 
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
         marginBottom: 60,
         borderWidth: 1,
         borderColor: "green",
         paddingTop: 12,
         paddingBottom: 12,
+        paddingLeft: 12,
         padding: 18,
-        borderRadius: 30,
+        borderRadius: 8,
 
     },
 
@@ -165,15 +207,20 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
         marginBottom: 60,
         borderWidth: 1,
         borderColor: "red",
         paddingTop: 12,
         paddingBottom: 12,
+        paddingLeft: 12,
         padding: 18,
-        borderRadius: 30,
+        borderRadius: 8,
 
+    },
+
+    transactionDateText:{
+
+        marginLeft: 10
     },
 
     boxStyleGreen:{
@@ -183,7 +230,7 @@ const styles = StyleSheet.create({
         paddingBottom: 14, 
         borderWith: 1, 
         borderColor: "green", 
-        borderRadius: 30,
+        borderRadius: 8,
 
     },
 
@@ -194,7 +241,7 @@ const styles = StyleSheet.create({
         paddingBottom: 14, 
         borderWith: 1, 
         borderColor: "red", 
-        borderRadius: 30,
+        borderRadius: 8,
 
     },
 
@@ -220,8 +267,9 @@ const styles = StyleSheet.create({
 
     addButtonGreen:{
 
-        padding: 16,
-        borderRadius: 30,
+        alignSelf: "center",
+        padding: 30,
+        borderRadius: 100,
         alignItems: "center",
         backgroundColor: "green",
 
@@ -229,8 +277,9 @@ const styles = StyleSheet.create({
 
     addButtonRed:{
 
-        padding: 16,
-        borderRadius: 30,
+        alignSelf: "center",
+        padding: 30,
+        borderRadius: 100,
         alignItems: "center",
         backgroundColor: "red",
 

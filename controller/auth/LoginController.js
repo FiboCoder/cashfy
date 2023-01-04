@@ -38,12 +38,12 @@ const LoginController = () =>{
             }else{
     
                 setLoading(false);
-                setErrorMessage("Preencha o campo Senha");
+                setErrorMessage("Preencha o campo: *Senha*");
             }
         }else{
 
             setLoading(false);
-            setErrorMessage("Preencha o campo E-mail!");
+            setErrorMessage("Preencha o campo: *E-mail*");
         }
 
         

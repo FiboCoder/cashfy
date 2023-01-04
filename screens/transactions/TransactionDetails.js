@@ -22,7 +22,7 @@ const TransactionDetails = () =>{
             </View>
 
             <View style={styles.categoryIconContainer}>
-                    <SimpleLineIcons name="handbag" size={28} color="#8000AD" />
+                    <SimpleLineIcons name="handbag" size={28} color="#1D1D1D" />
             </View>
 
             <Text style={styles.transactionNameText}>Salário</Text>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
         paddingRight: 24,
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#8000AD"
+        backgroundColor: "#1D1D1D"
     },
 
     headerContainer:{

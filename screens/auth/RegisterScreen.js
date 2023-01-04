@@ -19,45 +19,66 @@ const RegisterScreen = (props) =>{
 
             <View style={styles.subContainer}>
 
-                <Text style={styles.title}>CASHFY</Text>
+                <Image 
+                    width={"100%"} 
+                    height={"100%"}
+                    style={styles.logo} 
+                    source={require("../../assets/logo500x150.png")} 
+                    resizeMode={"contain"} 
+                    resizeMethod={"auto"}>
+                </Image>
 
-                <TouchableOpacity onPress={()=>{props.setShowImageSelectionModal(!props.showImageSelectionModal)}} style={styles.imageContainer}>
-                    {
-                        props.image != ""
-                        ?
-                            <Image style={styles.image} resizeMode="cover" source={{uri: props.image}}></Image>
-                        :
-                            
-                            <AntDesign name="user" size={50} color="#8000AD" />
-                            
-                    }
-                </TouchableOpacity>
+                <Text style={styles.title}>CADASTRAR</Text>
 
                 <View style={styles.textInputContainer}>
 
-                    <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setUsername(text)}} value={props.username} placeholder="Nome de usuário"></TextInput>
+                    <AntDesign style={styles.icon} name="user" size={24} color="#F6F6F6"/>
+                    <TextInput 
+                        style={styles.textInput} 
+                        onChangeText={(text)=>{props.setUsername(text)}}
+                        placeholder="Nome de usuário"
+                        placeholderTextColor={"white"}>
+                    </TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
-                    <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#8000AD" />
-                    <TextInput style={styles.textInput} onChangeText={(text)=>{props.setEmail(text)}} value={props.email} placeholder="E-mail"></TextInput>
+                    <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#F6F6F6" />
+                    <TextInput 
+                        style={styles.textInput} 
+                        onChangeText={(text)=>{props.setEmail(text)}}
+                        placeholder="E-mail"
+                        placeholderTextColor={"white"}>
+                    </TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
-                    <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setPassword(text)}} value={props.password} placeholder="Senha"></TextInput>
+                    <AntDesign style={styles.icon} name="lock" size={26} color="#F6F6F6"/>
+                    <TextInput 
+                        secureTextEntry={true} 
+                        style={styles.textInput} 
+                        onChangeText={(text)=>{props.setPassword(text)}} 
+                        value={props.password} 
+                        placeholder="Senha"
+                        placeholderTextColor={"white"}>
+                    </TextInput>
 
                 </View>
 
                 <View style={styles.textInputContainer}>
 
-                    <AntDesign style={styles.icon} name="lock" size={26} color="#8000AD"/>
-                    <TextInput secureTextEntry={true} style={styles.textInput} onChangeText={(text)=>{props.setConfirmPassword(text)}} value={props.confirmPassword} placeholder="Confirmar senha"></TextInput>
+                    <AntDesign style={styles.icon} name="lock" size={26} color="#F6F6F6"/>
+                    <TextInput 
+                        secureTextEntry={true} 
+                        style={styles.textInput} 
+                        onChangeText={(text)=>{props.setConfirmPassword(text)}} 
+                        value={props.confirmPassword} 
+                        placeholder="Confirmar senha"
+                        placeholderTextColor={"white"}>
+                    </TextInput>
 
                 </View>
                 
@@ -78,9 +99,9 @@ const RegisterScreen = (props) =>{
                     </TouchableOpacity>
                 </View>
                 
-                <Pressable onPress={()=>{navigation.navigate("LoginStack")}} style={styles.noAccountContainer}>
-                    <Text style={styles.noAccountText1}>Tem conta? </Text>    
-                    <Text style={styles.noAccountText2}>Acesse.</Text>    
+                <Pressable onPress={()=>{navigation.navigate("LoginStack")}} style={styles.haveAccountContainer}>
+                    <Text style={styles.haveAccountText1}>Tem conta? </Text>    
+                    <Text style={styles.haveAccountText2}>Acesse.</Text>    
                 </Pressable>
 
             </View>
@@ -115,7 +136,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         flexDirection: "column",
-        backgroundColor: "#8000AD",
+        backgroundColor: "#1D1D1D",
+        paddingLeft: 30,
+        paddingRight: 30,
         paddingTop: Constants.statusBarHeight
         
     },
@@ -130,11 +153,18 @@ const styles = StyleSheet.create({
     
     },
 
+    logo:{
+
+        width: "70%",
+        height: 90,
+    },
+
     title:{
 
         fontWeight: "700",
-        fontSize: 30,
-        color: "white"
+        fontSize: 20,
+        color: "white",
+        marginBottom: 70
     },
 
     imageContainer:{
@@ -165,15 +195,14 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         flexDirection: "row",
         alignItems: "center",
+        alignSelf: "stretch",
         justifyContent: "flex-start",
-        backgroundColor: "#F5D9FF",
-        borderRadius: 30,
+        backgroundColor: "#565656",
+        borderRadius: 8,
         padding: 12,
-        marginBottom: 12,
-        marginLeft: 10,
-        marginRight: 12,
-        paddingLeft: 12,
-        paddingRight: 10
+        marginBottom: 16,
+        paddingLeft: 16,
+        paddingRight: 16
     },
 
     textInput:{
@@ -203,12 +232,10 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 30,
+        borderRadius: 8,
         padding: 14,
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "#FF7E00",
         marginTop: 10,
-        marginLeft: 12,
-        marginRight: 12,
         elevation: 8
         
     },
@@ -217,27 +244,27 @@ const styles = StyleSheet.create({
 
         fontWeight: "700",
         fontSize: 24,
-        color: "#8000AD"
+        color: "white"
     },
 
-    noAccountContainer:{
+    haveAccountContainer:{
 
         marginTop: 50,
         marginBottom: 10,
         flexDirection: "row"
     },
 
-    noAccountText1:{
+    haveAccountText1:{
 
         fontSize: 16,
         color: "white"
     },
 
-    noAccountText2:{
+    haveAccountText2:{
 
         fontSize: 16,
-        fontWeight: "600",
-        color: "white"
+        fontWeight: "00",
+        color: "#FF7E00"
     }
 })
 export default RegisterScreen;

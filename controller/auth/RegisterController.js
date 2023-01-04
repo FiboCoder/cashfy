@@ -23,7 +23,7 @@ const RegisterController = () =>{
 
     const navigation = useNavigation();
 
-    const getImageFromGallery = async () =>{
+    /*const getImageFromGallery = async () =>{
 
         let image = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -63,7 +63,7 @@ const RegisterController = () =>{
             setShowImageSelectionModal(false);
             setImage(image.uri);
         }
-    }
+    }*/
 
     const register = async () =>{
 
@@ -81,7 +81,7 @@ const RegisterController = () =>{
 
                             if(password.length >= 6){
 
-                                if(image != ""){
+                                /*if(image != ""){
 
                                     setErrorMessage("");
 
@@ -109,7 +109,10 @@ const RegisterController = () =>{
                                     });
                                 }else{
 
-                                    setErrorMessage("");
+                                    
+                                }*/
+
+                                setErrorMessage("");
 
                                     User.addUser("", username, email.toLowerCase(), password).then(result=>{
 
@@ -121,7 +124,6 @@ const RegisterController = () =>{
                                         setLoading(false);
                                         navigation.navigate("LoginStack");
                                     });
-                                }
                             }else{
 
                                 setLoading(false);
@@ -137,25 +139,25 @@ const RegisterController = () =>{
                     }else{
             
                         setLoading(false);
-                        setErrorMessage("Preencha o campo Confirmar senha!");
+                        setErrorMessage("Preencha o campo: *Confirmar senha*");
 
                     }
                 }else{
         
                     setLoading(false);
-                    setErrorMessage("Preencha o campo Senha!");
+                    setErrorMessage("Preencha o campo: *Senha*");
                     
                 }
             }else{
     
                 setLoading(false);
-                setErrorMessage("Preencha o campo E-mail!");
+                setErrorMessage("Preencha o campo: *E-mail*");
                 
             }
         }else{
 
             setLoading(false);
-            setErrorMessage("Preencha o campo Nome de usuário!");
+            setErrorMessage("Preencha o campo: *Nome de usuário*");
         }
     }
 
@@ -182,8 +184,8 @@ const RegisterController = () =>{
             setShowImageSelectionModal={setShowImageSelectionModal}
             showImageSelectionModal={showImageSelectionModal}
 
-            getImageFromGallery={getImageFromGallery}
-            getImageFromCamera={getImageFromCamera}
+            //getImageFromGallery={getImageFromGallery}
+            //getImageFromCamera={getImageFromCamera}
 
         />
     );

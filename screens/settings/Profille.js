@@ -27,7 +27,7 @@ const Profile = () =>{
             <View style={styles.userInfo}>
 
                 <View style={styles.imageProfileContainer}>
-                    <AntDesign style={styles.icon} name="user" size={44} color="#8000AD"/>
+                    <AntDesign style={styles.icon} name="user" size={44} color="#1D1D1D"/>
                 </View>
                 <Text style={styles.usernameText}>Nome do usuário</Text>
             </View>
@@ -37,23 +37,23 @@ const Profile = () =>{
                 <TouchableOpacity style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
-                        <AntDesign style={styles.icon} name="user" size={24} color="#8000AD"/>
+                        <AntDesign style={styles.icon} name="user" size={24} color="white"/>
                         <Text style={styles.personalInfoText}>Informações Pessoais</Text>
                     </View>
                     
 
-                    <MaterialIcons name="arrow-forward-ios" size={22} color="#8000AD" />
+                    <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
 
                 </TouchableOpacity>
 
                 <TouchableOpacity style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
-                        <Ionicons name="ios-image-outline" size={24} color="#8000AD" />
+                        <Ionicons name="ios-image-outline" size={24} color="white" />
                         <Text style={styles.personalInfoText}>Tema e Cores</Text>
                     </View>
 
-                    <MaterialIcons name="arrow-forward-ios" size={22} color="#8000AD" />
+                    <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
                     
                 </TouchableOpacity>
 
@@ -62,7 +62,7 @@ const Profile = () =>{
 
             <TouchableOpacity style={styles.logoutButton}>
 
-                <Ionicons style={styles.icon} name="exit-outline" size={24} color="#8000AD" />
+                <Ionicons style={styles.icon} name="exit-outline" size={24} color="white" />
                 <Text style={styles.personalInfoText}>Sair</Text>
                     
             </TouchableOpacity>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: "column",
-        backgroundColor: "#8000AD",
+        backgroundColor: "#1D1D1D",
         paddingLeft: 24,
         paddingRight: 24
     },
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         alignSelf: "stretch",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#565656",
         borderRadius: 30,
         padding: 12,
         marginBottom: 20,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     personalInfoText:{
 
         marginLeft: 10,
-        color: "#8000AD"
+        color: "white"
     },
 
     logoutButton:{
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         marginLeft: 24,
         marginBottom: 24,
         flexDirection: "row",
-        backgroundColor: "#EEEEEE",
+        backgroundColor: "#565656",
         borderRadius: 30,
         alignItems: "center",
         paddingTop: 8,
