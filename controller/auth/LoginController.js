@@ -32,6 +32,8 @@ const LoginController = () =>{
                     navigation.navigate("HomeStack");
                 }).catch(err=>{
 
+                    console.log(err)
+
                     setPassword("");
                     setLoading(false);
                 })

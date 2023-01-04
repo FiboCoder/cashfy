@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
 const TransactionComponent = (props) =>{
 
@@ -8,27 +9,27 @@ const TransactionComponent = (props) =>{
 
     return(
 
-        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack")}} style={styles.container}>
+        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack", {transaction: props.transaction, route: props.route})}} style={styles.container}>
 
             <View style={styles.subContainer}>
 
-                <View style={props.type == "green" ? styles.iconContainerGreen : styles.iconContainerRed}>
+                <View style={props.transaction.type == "Earning" ? styles.iconContainerGreen : styles.iconContainerRed}>
                     <SimpleLineIcons name="handbag" size={20} color="white" />
                 </View>
 
                 <View style={styles.infoContainer}>
 
-                    <Text numberOfLines={1} style={styles.titleText}>Título da transação</Text>
-                    <Text numberOfLines={1} style={styles.descriptionText}>Descrição da transação.</Text>
+                    <Text numberOfLines={1} style={styles.titleText}>{props.transaction.name}</Text>
+                    <Text numberOfLines={1} style={styles.descriptionText}>{props.transaction.description}</Text>
                 </View>
             </View>
             
 
-            <Text style={props.type == "green" ? styles.priceTextGreen : styles.priceTextRed}>+ R$100,59</Text>
+            <Text style={props.transaction.type == "Earning" ? styles.priceTextGreen : styles.priceTextRed}>{props.transaction.type == "Earning" ? "+ R$" : "- R$"}{props.transaction.value}</Text>
         </TouchableOpacity>
     );
 }
-
+    
 const styles = StyleSheet.create({
 
     container:{
