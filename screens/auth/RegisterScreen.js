@@ -37,7 +37,7 @@ const RegisterScreen = (props) =>{
                         style={styles.textInput} 
                         onChangeText={(text)=>{props.setUsername(text)}}
                         placeholder="Nome de usuário"
-                        placeholderTextColor={"white"}>
+                        placeholderTextColor={"#E6E6E6"}>
                     </TextInput>
 
                 </View>
@@ -49,7 +49,7 @@ const RegisterScreen = (props) =>{
                         style={styles.textInput} 
                         onChangeText={(text)=>{props.setEmail(text)}}
                         placeholder="E-mail"
-                        placeholderTextColor={"white"}>
+                        placeholderTextColor={"#E6E6E6"}>
                     </TextInput>
 
                 </View>
@@ -63,7 +63,7 @@ const RegisterScreen = (props) =>{
                         onChangeText={(text)=>{props.setPassword(text)}} 
                         value={props.password} 
                         placeholder="Senha"
-                        placeholderTextColor={"white"}>
+                        placeholderTextColor={"#E6E6E6"}>
                     </TextInput>
 
                 </View>
@@ -77,7 +77,7 @@ const RegisterScreen = (props) =>{
                         onChangeText={(text)=>{props.setConfirmPassword(text)}} 
                         value={props.confirmPassword} 
                         placeholder="Confirmar senha"
-                        placeholderTextColor={"white"}>
+                        placeholderTextColor={"#E6E6E6"}>
                     </TextInput>
 
                 </View>
@@ -202,15 +202,15 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 16,
         paddingLeft: 16,
-        paddingRight: 16
+        paddingRight: 16,
     },
 
     textInput:{
 
         flex: 1,
         alignSelf: "stretch",
-        marginLeft: 10
-
+        marginLeft: 10,
+        color: "white"
     },
 
     registerButtonContainer:{
@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     haveAccountText2:{
 
         fontSize: 16,
-        fontWeight: "00",
+        fontWeight: "700",
         color: "#FF7E00"
     }
 })

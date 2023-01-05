@@ -36,7 +36,7 @@ const LoginScreen = (props) =>{
                         style={styles.textInput} 
                         onChangeText={(text)=>{props.setEmail(text)}}
                         placeholder="E-mail" 
-                        placeholderTextColor={"#F6F6F6"}>
+                        placeholderTextColor={"#E6E6E6"}>
 
                     </TextInput>
 
@@ -50,7 +50,7 @@ const LoginScreen = (props) =>{
                         style={styles.textInput} 
                         onChangeText={(text)=>{props.setPassword(text)}}
                         placeholder="Senha"
-                        placeholderTextColor={"#F6F6F6"}>
+                        placeholderTextColor={"#E6E6E6"}>
                     </TextInput>
 
                 </View>

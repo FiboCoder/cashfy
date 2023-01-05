@@ -148,15 +148,6 @@ const Home = (props) =>{
 
                         </TouchableOpacity>
                     </View>
-
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
-                    <TransactionComponent type={"red"}/>
-                    <TransactionComponent type={"green"}/>
-
-                    
                 </View>
 
                 

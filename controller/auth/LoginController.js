@@ -4,7 +4,7 @@ import LoginScreen from "../../screens/auth/LoginScreen";
 import { User } from "../../utils/User";
 import { useNavigation } from "@react-navigation/native";
 
-const LoginController = () =>{
+const LoginController = (props) =>{
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -16,6 +16,7 @@ const LoginController = () =>{
 
     const login = () =>{
 
+
         setLoading(true);
         
         if(email.toLowerCase() != ""){
@@ -24,12 +25,10 @@ const LoginController = () =>{
 
                 User.signIn(email.toLowerCase(), password).then(result=>{
 
-                    console.log(result)
-
                     setEmail("");
                     setPassword("");
                     setLoading(false);
-                    navigation.navigate("HomeStack");
+                    props.signIn(result.user.uid);
                 }).catch(err=>{
 
                     console.log(err)
