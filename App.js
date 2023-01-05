@@ -11,6 +11,8 @@ import TransactionDetailsController from './controller/transactions/TransactionD
 import { LogBox, Text, View } from 'react-native';
 import SplashScreen from './screens/main/SplashScreen';
 import * as SecureStore from 'expo-secure-store';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './utils/Firebase';
 
 const AuthContext = React.createContext();
 
@@ -126,7 +128,34 @@ function App() {
       let userToken;
 
       try {
-        userToken = await SecureStore.getItemAsync('userToken');
+
+        userToken = await SecureStore.getItemAsync('userToken').then(result=>{
+
+          onAuthStateChanged(auth, user=>{
+
+            if(user){
+
+              if(user.uid == result){
+
+                console.log("USER ID - " + user.uid + " - RESULT - " + result)
+
+                dispatch({ type: 'RESTORE_TOKEN', token: user.uid });
+              }else{
+                console.log("DIFFERENT")
+
+                dispatch({ type: 'RESTORE_TOKEN', token: null });
+              }
+            }else{
+
+              console.log("NO USER")
+
+              dispatch({ type: 'RESTORE_TOKEN', token: null });
+            }
+          });
+        })
+
+        
+        
       } catch (e) {
         // Restoring token failed
       }
@@ -135,7 +164,7 @@ function App() {
 
       // This will switch to the App screen or Auth screen and this loading
       // screen will be unmounted and thrown away.
-      dispatch({ type: 'RESTORE_TOKEN', token: userToken });
+      
     };
 
     bootstrapAsync();
