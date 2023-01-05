@@ -32,11 +32,11 @@ const HomeController = () =>{
         switch(type){
 
             case "Earning":
-                navigation.navigate("AddTransactionStack", {transactionType: type, userData});
+                navigation.navigate("AddTransactionStack", {transactionType: "Earning", userData});
                 break;
 
-            case "Expense":
-                navigation.navigate("AddTransactionStack", {transactionType: type, userData});
+            case "Spending":
+                navigation.navigate("AddTransactionStack", {transactionType: "Spending", userData});
                 break;
         }
     }

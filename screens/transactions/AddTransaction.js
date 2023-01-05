@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import Constants from 'expo-constants';
 import { useState } from "react";
 
@@ -6,6 +6,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { Format } from "../../utils/Format";
+import LoadingBar from "../components/LoadingBar";
 
 
 const AddTransaction = (props) =>{
@@ -24,23 +26,29 @@ const AddTransaction = (props) =>{
                 <Text style={styles.titleText}>Adicionar Transação</Text>
             </View>
 
-            <TextInput 
+            <TextInput
 
+                style={styles.textInputHeader}
                 keyboardType="number-pad"  
-                numberOfLines={1} style={styles.textInputHeader} 
-                onChangeText={(val)=>{props.formatToCurrency(val)}} 
-                placeholder="R$0,00" value={ "R$"+props.transactionValue }>
-
+                numberOfLines={1}  
+                onChangeText={(val)=>{props.formatToCurrency(val)}}
+                placeholderTextColor="white" 
+                placeholder="R$0,00" 
+                value={ "R$"+Format.intToReal(props.transactionValue) }
+                >
+                
             </TextInput>
 
             <View style={styles.mainContainer}>
+
+                <ScrollView style={{}} contentContainerStyle={{padding: 20, paddinTop: 0, paddingBottom: 0}}>
 
                 <Text style={styles.fieldTitleText}>Título</Text>
 
                 <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
 
                     <MaterialIcons name="title" size={24} color="#565656" />
-                    <TextInput style={styles.textInputMain} placeholder="Títuo"></TextInput>
+                    <TextInput onChangeText={(val)=>{props.setTransactionName(val)}} style={styles.textInputMain} placeholder="Títuo">{props.transactionName}</TextInput>
 
                 </View>
 
@@ -49,7 +57,7 @@ const AddTransaction = (props) =>{
                 <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
 
                     <MaterialIcons name="subtitles" size={24} color="#565656" />
-                    <TextInput style={styles.textInputMain} placeholder="Descrição"></TextInput>
+                    <TextInput onChangeText={(val)=>{props.setTransactionDescription(val)}} style={styles.textInputMain} placeholder="Descrição">{props.transactionDescription}</TextInput>
 
                 </View>
 
@@ -62,7 +70,7 @@ const AddTransaction = (props) =>{
                     inputStyles={styles.inputStyle} 
                     search={false} 
                     placeholder={"Selecionar Opção"} 
-                    setSelected={(val)=>{props.setTransactionType(val)}} 
+                    setSelected={(val)=>{props.setTransactionCategory(val)}} 
                     data={props.data} 
                     save="value">
 
@@ -77,13 +85,18 @@ const AddTransaction = (props) =>{
                     </View>
                 </TouchableWithoutFeedback>
 
-                <TouchableOpacity 
-                    onPress={()=>{}} 
+                <Text>{props.errorMessage}</Text>
+
+                
+                </ScrollView>
+            </View>
+            <TouchableOpacity 
+                    onPress={()=>{props.saveTransaction()}} 
                     style={props.transactionTypeRoute == "Earning" ? styles.addButtonGreen : styles.addButtonRed}>
                         <AntDesign name="check" size={24} color="white" />
-                </TouchableOpacity>
+            </TouchableOpacity>
 
-            </View>
+            {props.isLoading ? <LoadingBar/> : null}
         </View>
     );
 }
@@ -133,6 +146,17 @@ const styles = StyleSheet.create({
     },
 
     mainContainer:{
+
+        flex: 1,
+        flexDirection: "column",
+        alignItems: "stretch",
+        backgroundColor: "white",
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
+        elevation: 20
+    },
+
+    mainContainerScrollView:{
 
         flex: 1,
         flexDirection: "column",
@@ -267,21 +291,27 @@ const styles = StyleSheet.create({
 
     addButtonGreen:{
 
+        position: "absolute",
+        bottom: 0,
         alignSelf: "center",
         padding: 30,
         borderRadius: 100,
         alignItems: "center",
         backgroundColor: "green",
+        elevation: 4
 
     },
 
     addButtonRed:{
 
+        position: "absolute",
+        bottom: 0,
         alignSelf: "center",
         padding: 30,
         borderRadius: 100,
         alignItems: "center",
         backgroundColor: "red",
+        elevation: 4
 
     },
 

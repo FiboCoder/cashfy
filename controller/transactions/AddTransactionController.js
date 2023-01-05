@@ -1,13 +1,12 @@
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useState } from "react";
 import AddTransaction from "../../screens/transactions/AddTransaction";
 import { Format } from "../../utils/Format";
 import { Transaction } from "../../utils/Transaction";
+import { User } from "../../utils/User";
 
 const AddTransactionController = (props) =>{
-
-    
 
     const [transactionValue, setTransactionValue] = useState("");
     const [transactionName, setTransactionName] = useState("");
@@ -18,6 +17,7 @@ const AddTransactionController = (props) =>{
     const [isLoading, setIsLoading] =useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+    const navigation = useNavigation();
     const route = useRoute();
 
     const data = [
@@ -38,11 +38,9 @@ const AddTransactionController = (props) =>{
         DateTimePickerAndroid.open({
 
             mode: "date",
-            display: "calendar",
+            display: "default",
             value: transactionDate,
             locale: "pt-BR",
-            positiveButton: {label: 'OK', textColor: 'green'},
-            negativeButton: {label: 'Cancel', textColor: '#ff3000'},
             onChange
         })
     }
@@ -50,9 +48,6 @@ const AddTransactionController = (props) =>{
     const formatToCurrency = (value) => {
 
         setTransactionValue(value);
-
-        console.log(Format.intToReal(value));
-        console.log(Format.intToCurrency(value));
     }
 
     const saveTransaction = () =>{
@@ -81,13 +76,33 @@ const AddTransactionController = (props) =>{
                                 transactionDate.getTime()
                             ).then(result=>{
 
-                                setTransactionValue("");
-                                setTransactionName("");
-                                setTransactionDescription("");
-                                setTransactionCategory("");
-                                setTransactionDate(new Date());
-                                setIsLoading(false);
+                                if(route.params.transactionType == "Earning"){
 
+                                    let balance = parseFloat(route.params.userData.balance) + parseFloat(Format.intToCurrency(transactionValue));
+                                    User.updateBalance(String(balance.toFixed(2)), route.params.userData.email).then(result=>{
+
+                                        setTransactionValue("");
+                                        setTransactionName("");
+                                        setTransactionDescription("");
+                                        setTransactionCategory("");
+                                        setTransactionDate(new Date());
+                                        setIsLoading(false);
+                                        navigation.goBack();
+                                    });
+                                }else{
+
+                                    let balance = parseFloat(route.params.userData.balance) - parseFloat(Format.intToCurrency(transactionValue));
+                                    User.updateBalance(String(balance.toFixed(2)), route.params.userData.email).then(result=>{
+
+                                        setTransactionValue("");
+                                        setTransactionName("");
+                                        setTransactionDescription("");
+                                        setTransactionCategory("");
+                                        setTransactionDate(new Date());
+                                        setIsLoading(false);
+                                        navigation.goBack();
+                                    });
+                                }
                             });
                         }else{
 

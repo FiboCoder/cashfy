@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, db, storage } from "./Firebase";
 
@@ -61,7 +61,8 @@ export class User{
 
                     imageUrl,
                     email,
-                    username
+                    username,
+                    balance: "0.00"
                 }).then(result=>{
 
                     resolve(result);
@@ -75,5 +76,24 @@ export class User{
             });
         });
         
+    }
+
+    static updateBalance(balance, email){
+
+        console.log(balance)
+
+        return new Promise((resolve, reject)=>{
+
+            updateDoc(doc(db, "users", email),{
+
+                balance
+            }).then(result=>{
+
+                resolve(result);
+            }).catch(err=>{
+
+                reject(err);
+            })
+        });
     }
 }

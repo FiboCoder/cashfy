@@ -8,6 +8,8 @@ import Constants from 'expo-constants';
 import { LineChart } from "react-native-chart-kit";
 import TransactionComponent from "../components/TransactionComponent";
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
+import Chart from "../components/Chart";
 
 
 const Home = (props) =>{
@@ -25,7 +27,7 @@ const Home = (props) =>{
 
                         <View style={styles.welcomeContainer}>
                         <Text style={styles.fixedMessage}>Olá, </Text>
-                        <Text style={styles.usernameText}>Steave</Text>
+                        <Text style={styles.usernameText}>{props.userData.username}</Text>
                         </View>
                         <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}} style={styles.imageProfileContainer}>
 
@@ -38,7 +40,7 @@ const Home = (props) =>{
 
                         <View>
                             <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
-                            <Text style={styles.balanceTextCard}>R$10.029.267,89</Text>
+                            <Text style={styles.balanceTextCard}>{"R$"+Format.intToReal(parseFloat(props.userData.balance).toFixed(2))}</Text>
                         </View>
                         
                         <Image
@@ -137,6 +139,8 @@ const Home = (props) =>{
                     </View>
                 </View>
 
+                <Chart></Chart>
+
                 <View style={styles.transactionsContainer}>
 
                     <View style={styles.transactionsTitleContainer}>
@@ -162,7 +166,7 @@ const Home = (props) =>{
                                 <TouchableOpacity onPress={()=>{props.addTransactionOption("Earning")}} style={styles.addBtnOptionsEarningContainer}>
                                     <Text style={styles.addBtnOptionsEarningText}>+ Ganho</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Expense")}}  style={styles.addBtnOptionsExpenseContainer}>
+                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Spending")}}  style={styles.addBtnOptionsExpenseContainer}>
                                     <Text style={styles.addBtnOptionsExpenseText}>- Gasto</Text>
                                 </TouchableOpacity>
                             </View>
