@@ -146,6 +146,8 @@ const HomeController = () =>{
 
             transactionsList={transactionsList}
             setTransactionsListLimited={setTransactionsListLimited}
+
+            transactionsListLimited={transactionsListLimited}
             renderTransaction={renderTransaction}
         ></Home>
     );

@@ -32,116 +32,59 @@ export class Transaction{
         });
     }
 
-    static recoverTransactionsToChart(email, chartTime = "month", transactionType = "Earning"){
+    static recoverTransactionToChart(email, chartTime){
 
         return new Promise((resolve, reject)=>{
 
-            let currentDateFixed = new Date();
-            let dateFixed = 0;
-            currentDateFixed.setMonth(currentDateFixed.getMonth() +1);
-            dateFixed = currentDateFixed.getTime();
-
             if(chartTime == "week"){
 
-                let currentDate = new Date();
-                let timestamp = 0;
+                let d = new Date();
+                d.setDate(d.getDate() - 7);
+                d.setHours(0, 0, 0, 0);
 
-                currentDate.setDate(currentDate.getDate() -6);
-        
-                timestamp = currentDate.getTime();
-
-                Transaction.recoverTransactionsFromDatabase(email, timestamp, dateFixed, transactionType).then(transactions=>{
+                const q = query(collection(db, "users", email, "transactions"), where("date", ">=", d.getTime()));
+                getDocs(q).then(transactions=>{
 
                     resolve(transactions);
+                }).catch(err=>{
+
+                    reject(err);
                 });
 
             }else if(chartTime == "month"){
 
+                let d = new Date();
+                let m = d.getMonth();
+                d.setMonth(d.getMonth() - 1);
 
-                let currentDate = new Date();
-                let timestamp = 0;
+                if (d.getMonth() == m) d.setDate(0);
+                d.setHours(0, 0, 0, 0);
 
-                currentDate.setMonth(currentDate.getMonth() -1);
-        
-                timestamp = currentDate.getTime();
-
-
-                this.recoverTransactionsFromDatabase(email, timestamp, dateFixed, transactionType).then(transactions=>{
-
-                    resolve(transactions);
-                });
-
-                
-            }else if(chartTime == "year"){
-    
-                let currentDate = new Date();
-    
-                currentDate.setFullYear(currentDate.getFullYear() -1);
-                
-                timestamp = currentDate.toLocaleString();
-
-                Transaction.recoverTransactionsFromDatabase(email, timestamp, currentDateFixed, transactionType).then(transactions=>{
+                const q = query(collection(db, "users", email, "transactions"), where("date", ">=", d.getTime()));
+                getDocs(q).then(transactions=>{
 
                     resolve(transactions);
-                });
-            }
-
-            
-        });
-    }
-
-    static recoverTransactionsFromDatabase(email, timestamp, currentDate, transactionType){
-
-        return new Promise((resolve, reject)=>{
-
-            if(transactionType == "Earnings"){
-
-                const transactionsQuery = query(
-                    collection(db, "users", email, "transactions"),
-                    where("type", "==", "Earning"),
-                    where("date", ">=", timestamp),
-                    where("date", "<=", currentDate))
-    
-                getDocs(transactionsQuery).then((transactions)=>{
-    
-                    resolve(transactions);
-                    
                 }).catch(err=>{
-    
-                    reject(err)
-                });
-            }else if(transactionType == "Spending"){
 
-                const transactionsQuery = query(
-                    collection(db, "users", email, "transactions"),
-                    where("type", "==", "Expense"),
-                    where("date", ">=", timestamp),
-                    where("date", "<=", currentDate))
-    
-                getDocs(transactionsQuery).then((transactions)=>{
-    
-                    resolve(transactions);
-                    
-                }).catch(err=>{
-    
-                    reject(err)
+                    reject(err);
                 });
+
             }else{
 
-                const transactionsQuery = query(
-                    collection(db, "users", email, "transactions"),
-                    where("date", ">=", timestamp),
-                    where("date", "<=", currentDate))
-    
-                getDocs(transactionsQuery).then(transactions=>{
-    
+                let d = new Date();
+                d.setFullYear(d.getFullYear() - 1);
+                d.setHours(0, 0, 0, 0);
+                
+                const q = query(collection(db, "users", email, "transactions"), where("date", ">=", d.getTime()));
+                const querySnapshot = getDocs(q);
+                querySnapshot.then(transactions=>{
+
                     resolve(transactions);
-                    
                 }).catch(err=>{
-    
-                    reject(err)
+
+                    reject(err);
                 });
             }
-        })
+        });
     }
 }

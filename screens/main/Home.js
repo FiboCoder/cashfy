@@ -1,16 +1,13 @@
 import React from "react";
-import { Dimensions, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-
-import { LineChart } from "react-native-chart-kit";
-import TransactionComponent from "../components/TransactionComponent";
 import { useNavigation } from "@react-navigation/native";
 import { Format } from "../../utils/Format";
-import Chart from "../components/Chart";
-
+import { MenuProvider } from "react-native-popup-menu";
+import ChartController from "../../controller/components/ChartController";
 
 const Home = (props) =>{
 
@@ -18,10 +15,19 @@ const Home = (props) =>{
 
     return(
 
-        <>
+        <MenuProvider>
+
             <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
 
-                <View style={styles.cardContainer}>
+
+                <ImageBackground
+                    source={require("../../images/bg_2.png")} 
+                    resizeMode={"cover"}
+                    style={styles.cardImagebackground}
+                    width={"100%"}
+                    height={"100%"}
+                    imageStyle={{borderRadius: 10}}>
+                        
 
                     <View style={styles.topContainer}>
 
@@ -30,7 +36,6 @@ const Home = (props) =>{
                         <Text style={styles.usernameText}>{props.userData.username}</Text>
                         </View>
                         <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}} style={styles.imageProfileContainer}>
-
                             <AntDesign style={styles.icon} name="user" size={24} color="#1D1D1D"/>
                         </TouchableOpacity>
                         
@@ -44,102 +49,17 @@ const Home = (props) =>{
                         </View>
                         
                         <Image
-                        
-                            width={"100%"}
-                            height={"100%"}
+                            width={100}
+                            height={100}
                             style={styles.logo}
                             source={require("../../assets/logo500x150.png")}
                             resizeMode={"contain"}
                             resizeMethod={"auto"}>
                         </Image>
                     </View>
-                </View>
+                </ImageBackground>
 
-                {/*<View style={styles.topButtonsContainer}>
-
-                    <TouchableOpacity onPress={()=>{props.setPressedButton("Earnings")}} style={props.pressedButton === "Earnings" ? styles.activeButton : styles.inactiveButton}>
-                        <Text style={props.pressedButton === "Earnings" ? styles.activeText : styles.inactiveText}>Ganhos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.setPressedButton("Balance")}} style={props.pressedButton === "Balance" ? styles.activeButton : styles.inactiveButton}>
-                        <Text style={props.pressedButton === "Balance" ? styles.activeText : styles.inactiveText}>Todos</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.setPressedButton("Spending")}} style={props.pressedButton === "Spending" ? styles.activeButton : styles.inactiveButton}>
-                        <Text style={props.pressedButton === "Spending" ? styles.activeText : styles.inactiveText}>Gastos</Text>
-                    </TouchableOpacity>
-                </View>*/}
-
-                {/*<View style={styles.chartContainer}>
-
-                <LineChart
-                    data={{
-                    labels: ["1", "5", "10", "15", "20", "25", "30"],
-                    datasets: [
-                        {
-                        data: [
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100,
-                            Math.random() * 100
-                        ]
-                        }
-                    ]
-                    }}
-                    width={Dimensions.get("window").width} // from react-native
-                    height={220}
-                    yAxisLabel="R$"
-                    yAxisSuffix="k"
-                    yAxisInterval={1} // optional, defaults to 1
-                    chartConfig={{
-                    backgroundColor: "#FFFFFF",
-                    backgroundGradientFrom: "#FFF",
-                    backgroundGradientTo: "#FFF",
-                    fillShadowGradientFrom: "#8000AD",
-                    fillShadowGradientTo: "#AF73C4",
-                    decimalPlaces: 2, // optional, defaults to 2dp
-                    color: (opacity = 1) => `#8000AD`,
-                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                    style: {
-                        borderRadius: 16
-                    },
-                    propsForDots: {
-                        r: "6",
-                        strokeWidth: "2",
-                        stroke: "#8000AD"
-                    }
-                    }}
-                    bezier
-                    style={{
-                    marginVertical: 8,
-                    }}
-                />
-                </View>*/}
-
-                <View style={styles.resumeOfTransactionsContainer}>
-
-                    <Text style={[styles.transactionsText, {marginBottom: 30}]}>Resumo de Transações</Text>
-
-                    <View style={styles.resumeCardsContainer}>
-
-                        <View style={styles.resumeCardContainer}>
-                            <Text style={styles.cardTitleText}>Gastos</Text>
-                            <Text style={styles.cardPriceText}>R$10.000</Text>
-                        </View>
-
-                        <View style={styles.resumeCardContainer}>
-                            <Text style={styles.cardTitleText}>Ganhos</Text>
-                            <Text style={styles.cardPriceText}>R$10.000</Text>
-                        </View> 
-
-                        <View style={styles.resumeCardContainer}>
-                            <Text style={styles.cardTitleText}>Transferências</Text>
-                            <Text style={styles.cardPriceText}>R$10.000</Text>
-                        </View>
-                    </View>
-                </View>
-
-                <Chart></Chart>
+                <ChartController userData={props.userData} style={styles.ChartController}></ChartController>
 
                 <View style={styles.transactionsContainer}>
 
@@ -152,6 +72,11 @@ const Home = (props) =>{
 
                         </TouchableOpacity>
                     </View>
+
+                    <FlatList 
+                        data={props.transactionsListLimited}
+                        renderItem={props.renderTransaction}
+                        keyExtractor={item => item.date}></FlatList>
                 </View>
 
                 
@@ -179,7 +104,7 @@ const Home = (props) =>{
                 </TouchableOpacity>
             </View>
             
-        </>
+        </MenuProvider>
     );
 }
 
@@ -191,19 +116,19 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         paddingTop: Constants.statusBarHeight + 30,
         backgroundColor: "#F2F2F2",
-        paddingLeft: 20,
-        paddingRight: 20
     },
 
-    cardContainer:{
+    cardImagebackground:{
 
-        flexDirection: "column",
         alignSelf: "stretch",
-        marginBottom: 50,
-        backgroundColor: "#1D1D1D",
-        borderRadius: 14,
+        flexDirection: "column",
         padding: 20,
+        marginBottom: 50,
+        borderRadius: 10,
         elevation: 10,
+        marginLeft: 20,
+        marginRight: 20
+
     },
 
     topContainer:{
@@ -211,7 +136,7 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
     },
 
     welcomeContainer:{
@@ -274,7 +199,10 @@ const styles = StyleSheet.create({
 
         marginBottom: 50,
         alignSelf: "stretch",
-        flexDirection: "column"
+        flexDirection: "column",
+        marginLeft: 20,
+        marginRight: 20,
+        backgroundColor: "#1D1D1D"
     },
 
     resumeCardsContainer:{
@@ -357,17 +285,18 @@ const styles = StyleSheet.create({
         color: "white"
     },
 
-    chartContainer:{
+    chart:{
 
-        alignSelf: "stretch",
-        marginBottom: 30,
+        marginBottom: 30
     },
 
     transactionsContainer:{
 
-        marginBottom: 58,
+        marginBottom: 60,
         flexDirection: "column",
         alignSelf: "stretch",
+        marginLeft: 20,
+        marginRight: 20
 
     },
 
