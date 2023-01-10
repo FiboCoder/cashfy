@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import TransactionComponent from "../../screens/components/TransactionComponent";
 import Home from "../../screens/main/Home"
 import { auth, db } from "../../utils/Firebase";
-import { Transaction } from "../../utils/Transaction";
 
 const HomeController = () =>{
 
@@ -46,6 +45,7 @@ const HomeController = () =>{
 
     useEffect(()=>{
 
+
         onAuthStateChanged(auth, user=>{
 
             if(user){
@@ -69,6 +69,9 @@ const HomeController = () =>{
                     if(!transactions.empty){
     
                         transactions.forEach(transaction=>{
+
+
+                            transactionsListArray.push(transaction.data());
     
                             if(transaction.data().type === "Earning"){
 
@@ -82,15 +85,9 @@ const HomeController = () =>{
 
                         });
 
-                        for(let i = 0; i++; i<=10){
-
-                            transactionsListArray.push(transactions[i].data())
-                        }
-
                         setTotalEarnings(earnings);
                         setTotalSpendings(spendings);
                         setTotal(sum);
-                        setTransactionsListLimited(transactionsListArray);
                     }
                 }).catch(err=>{
     
@@ -100,27 +97,44 @@ const HomeController = () =>{
         });
     },[]);
 
-    /*useEffect(()=>{
+    useEffect(()=>{
 
-        Transaction.recoverTransactionsToChart(userData.email, chartTime, pressedButton).then(transactions=>{
+        onAuthStateChanged(auth, user=>{
 
-            let transactionsArray = [];
+            if(user){
 
-            transactions.forEach(transaction=>{
+                getDoc(doc(db, "users", user.email)).then(userData=>{
+                    
+                    setUserData(userData.data());
+                });
 
-                transactionsArray.push(transaction.data());
-            });
+                const transactionsQuery = query(
+                    collection(db, "users", user.email, "transactions"), 
+                    orderBy("date", "desc"),
+                    limit(6));
+                getDocs(transactionsQuery).then(transactions=>{
+    
+                    let transactionsListArray = [];
 
-            setTransactionsListToChart(transactionsArray);
+                    if(!transactions.empty){
+    
+                        transactions.forEach(transaction=>{
 
+                            transactionsListArray.push(transaction.data());
+                        });
+
+                        setTransactionsListLimited(transactionsListArray);
+                    }
+                }).catch(err=>{
+    
+                });
+            }
         });
 
 
-    },[chartTime]);*/
+    },[transactionsListLimited]);
 
     const renderTransaction = ({item}) =>{
-
-        
 
         return <TransactionComponent transaction={item} route={"Home"}></TransactionComponent>;
     }

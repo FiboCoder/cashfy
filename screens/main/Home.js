@@ -17,8 +17,7 @@ const Home = (props) =>{
 
         <MenuProvider>
 
-            <ScrollView style={styles.container} contentContainerStyle={{alignItems: "center"}}>
-
+            <ScrollView style={styles.container} >
 
                 <ImageBackground
                     source={require("../../images/bg_2.png")} 
@@ -73,10 +72,13 @@ const Home = (props) =>{
                         </TouchableOpacity>
                     </View>
 
-                    <FlatList 
-                        data={props.transactionsListLimited}
-                        renderItem={props.renderTransaction}
-                        keyExtractor={item => item.date}></FlatList>
+                    <View style={styles.transactionsListContainer}>
+                        <FlatList 
+                            data={props.transactionsListLimited}
+                            renderItem={props.renderTransaction}
+                            keyExtractor={item => item.date}>
+                        </FlatList>
+                        </View>
                 </View>
 
                 
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         paddingTop: Constants.statusBarHeight + 30,
-        backgroundColor: "#F2F2F2",
+        backgroundColor: "#FF7E00",
     },
 
     cardImagebackground:{
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         flexDirection: "column",
         padding: 20,
-        marginBottom: 50,
+        marginBottom: 30,
         borderRadius: 10,
         elevation: 10,
         marginLeft: 20,
@@ -197,12 +199,10 @@ const styles = StyleSheet.create({
 
     resumeOfTransactionsContainer:{
 
-        marginBottom: 50,
         alignSelf: "stretch",
         flexDirection: "column",
         marginLeft: 20,
         marginRight: 20,
-        backgroundColor: "#1D1D1D"
     },
 
     resumeCardsContainer:{
@@ -239,52 +239,6 @@ const styles = StyleSheet.create({
         color: "#FF7E00"
     },
 
-    topButtonsContainer:{
-
-        marginBottom: 30,
-        alignSelf: "stretch",
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: "#565656",
-        borderRadius: 8,
-        padding: 6,
-        paddingLeft: 30,
-        paddingRight: 30,
-        elevation: 4
-    },
-
-    inactiveButton:{
-
-        backgroundColor: "#565656",
-        padding: 10,
-        paddingLeft: 26,
-        paddingRight: 26,
-        borderRadius: 8,
-    },
-    activeButton:{
-
-        backgroundColor: "#FF7E00",
-        padding: 10,
-        paddingLeft: 26,
-        paddingRight: 26,
-        borderRadius: 8,
-        elevation: 6
-    },
-
-    inactiveText:{
-
-        fontWeight: "700",
-        fontSize: 18,
-        color: "white"
-    },
-    activeText:{
-
-        fontWeight: "700",
-        fontSize: 20,
-        color: "white"
-    },
-
     chart:{
 
         marginBottom: 30
@@ -292,21 +246,25 @@ const styles = StyleSheet.create({
 
     transactionsContainer:{
 
-        marginBottom: 60,
+        paddingTop: 20,
+        marginBottom: 50,
         flexDirection: "column",
         alignSelf: "stretch",
-        marginLeft: 20,
-        marginRight: 20
+        backgroundColor: "white"
 
     },
 
     transactionsTitleContainer:{
 
-        marginBottom: 30,
         alignSelf: "stretch",
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        alignSelf: "stretch",
+        fontSize: 22,
+        fontWeight: "700",
+        marginBottom: 10,
+        padding: 12,
     },
 
     transactionsText:{
@@ -314,6 +272,11 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: "700",
         color: "#1D1D1D"
+    },
+
+    transactionsListContainer:{
+
+        padding: 20
     },
 
     addTransactionButtonContainer:{

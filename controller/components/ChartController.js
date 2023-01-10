@@ -14,7 +14,7 @@ const ChartController = (props) =>{
     const [spendingSum, setSpendingSum] = useState(0);
     const [transferSum, setTransferSum] = useState(0);
 
-    const fetchData  = async (chartTime) =>{
+    const fetchData = (chartTime) =>{
 
         switch(chartTime){
 

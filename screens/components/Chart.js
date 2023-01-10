@@ -35,7 +35,7 @@ const Chart = (props) =>{
 
                     containerComponent={<VictoryContainer responsive={true}/>}
 
-                    padding={80}
+                    padding={90}
                     innerRadius={50}
                     padAngle={3}
 
@@ -89,14 +89,12 @@ const styles = StyleSheet.create({
 
     chartContainer:{
 
+        paddingTop: 10,
         alignSelf: "stretch",
         alignItems: "center",
         backgroundColor: "white",
-        elevation: 2,
-        borderRadius: 10,
-        marginBottom: 50,
-        marginLeft: 20,
-        marginRight: 20
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
     },
 
     titleText:{
@@ -104,13 +102,9 @@ const styles = StyleSheet.create({
         alignSelf: "stretch",
         fontSize: 22,
         fontWeight: "700",
-        color: "white",
-        marginBottom: 30,
+        color: "#1D1F1D",
+        marginBottom: 20,
         padding: 12,
-        backgroundColor: "#565656",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        elevation: 4
     },
 
     chartTimeSelectContainer:{
