@@ -19,92 +19,135 @@ const Home = (props) =>{
 
             <ScrollView style={styles.container} >
 
-                <ImageBackground
-                    source={require("../../images/bg_2.png")} 
-                    resizeMode={"cover"}
-                    style={styles.cardImagebackground}
-                    width={"100%"}
-                    height={"100%"}
-                    imageStyle={{borderRadius: 10}}>
-                        
+                <View style={styles.topContainerMain}>
 
-                    <View style={styles.topContainer}>
-
-                        <View style={styles.welcomeContainer}>
+                    <View style={styles.welcomeContainer}>
                         <Text style={styles.fixedMessage}>Olá, </Text>
                         <Text style={styles.usernameText}>{props.userData.username}</Text>
-                        </View>
-                        <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}} style={styles.imageProfileContainer}>
-                            <AntDesign style={styles.icon} name="user" size={24} color="#1D1D1D"/>
-                        </TouchableOpacity>
-                        
                     </View>
 
-                    <View style={styles.bottomContainer}>
-
-                        <View>
-                            <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
-                            <Text style={styles.balanceTextCard}>{"R$"+Format.intToReal(parseFloat(props.userData.balance).toFixed(2))}</Text>
-                        </View>
-                        
-                        <Image
-                            width={100}
-                            height={100}
-                            style={styles.logo}
-                            source={require("../../assets/logo500x150.png")}
-                            resizeMode={"contain"}
-                            resizeMethod={"auto"}>
-                        </Image>
-                    </View>
-                </ImageBackground>
-
-                <ChartController userData={props.userData} style={styles.ChartController}></ChartController>
-
-                <View style={styles.transactionsContainer}>
-
-                    <View style={styles.transactionsTitleContainer}>
-                        <Text style={styles.transactionsText}>Transações</Text>
-
-                        <TouchableOpacity onPress={()=>{navigation.navigate("TransactionsStack")}}>
-
-                            <MaterialIcons name="arrow-forward-ios" size={24} color="#1D1D1D" />
-
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.transactionsListContainer}>
-                        <FlatList 
-                            data={props.transactionsListLimited}
-                            renderItem={props.renderTransaction}
-                            keyExtractor={item => item.date}>
-                        </FlatList>
-                        </View>
+                    <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack", {userData: props.userData})}} style={styles.imageProfileContainer}>
+                        <AntDesign style={styles.icon} name="user" size={24} color="#1D1D1D"/>
+                    </TouchableOpacity>
                 </View>
 
-                
+                <View style={styles.mainContainer}>
+
+                    <ImageBackground
+                        source={require("../../images/bg_3.png")} 
+                        resizeMode={"cover"}
+                        style={styles.cardImagebackground}
+                        width={"100%"}
+                        height={"100%"}
+                        imageStyle={{borderRadius: 10}}>
+                            
+
+                        <View style={styles.topContainer}>
+
+                            <Image
+                                width={100}
+                                height={100}
+                                style={styles.logo}
+                                source={require("../../assets/logo500x150.png")}
+                                resizeMode={"contain"}
+                                resizeMethod={"auto"}>
+                            </Image>
+                        </View>
+
+                        <View style={styles.bottomContainer}>
+
+                            <View>
+                                <Text style={styles.phraseText}>Visão geral da sua carteira</Text>
+                                <Text style={styles.balanceTextCard}>{"R$"+Format.intToReal(parseFloat(props.userData.balance).toFixed(2))}</Text>
+                            </View>
+                            
+                            
+                        </View>
+                    </ImageBackground>
+
+                    
+
+                    {/*<ScrollView 
+                        style={styles.resumeOfTransactionsContainer} 
+                        contentContainerStyle={styles.resumeOfTransactionsContentContainer}
+                        horizontal={true}
+                        centerContent={true}
+                        showsHorizontalScrollIndicator={false}
+                        decelerationRate={0}
+                        snapToInterval={280}
+                        snapToAlignment={"center"}
+                        >
+
+                        <View style={styles.resumeCardContainer}>
+                            <Text style={[styles.cardTitleText, {backgroundColor: "green"}]}>Ganhos</Text>
+                            <Text style={styles.cardPriceText}>{"R$"+Format.intToReal(parseFloat(props.spendingSum).toFixed(2))}</Text>
+                        </View>
+                        <View style={styles.resumeCardContainer}>
+                            <Text style={[styles.cardTitleText, {backgroundColor: "red"}]}>Gastos</Text>
+                            <Text style={styles.cardPriceText}>{"R$"+Format.intToReal(parseFloat(props.spendingSum).toFixed(2))}</Text>
+                        </View>
+                        <View style={styles.resumeCardContainer}>
+                            <Text style={[styles.cardTitleText, {backgroundColor: "gray"}]}>Transferências</Text>
+                            <Text style={styles.cardPriceText}>{"R$"+Format.intToReal(parseFloat(props.spendingSum).toFixed(2))}</Text>
+                        </View>
+                    </ScrollView>*/}
+
+                    {
+
+                        props.transactionsList != null
+                            ?
+                                <ChartController userData={props.userData} style={styles.ChartController}></ChartController>
+                            :
+                                null
+                    }
+
+                    
+
+                    <View style={styles.transactionsContainer}>
+
+                        <View style={styles.transactionsTitleContainer}>
+                            <Text style={styles.transactionsText}>Transações</Text>
+
+                            <TouchableOpacity onPress={()=>{navigation.navigate("TransactionsStack"), {}}}>
+
+                                <MaterialIcons name="arrow-forward-ios" size={24} color="#1D1D1D" />
+
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.transactionsListContainer}>
+                            <FlatList 
+                                data={props.transactionsListLimited}
+                                renderItem={props.renderTransaction}
+                                keyExtractor={item => item.date}>
+                            </FlatList>
+                            </View>
+                    </View>
+                    
+                </View>
             </ScrollView>
 
-            <View onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={ props.addTransactionsOptionsOpen ? styles.addTransactionButtonContainerActive : styles.addTransactionButtonContainer }>
+                <View onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={ props.addTransactionsOptionsOpen ? styles.addTransactionButtonContainerActive : styles.addTransactionButtonContainer }>
 
-                {
-                    props.addTransactionsOptionsOpen
-                        ?
-                            <View style={styles.transactionsOptionsContainer}>
-                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Earning")}} style={styles.addBtnOptionsEarningContainer}>
-                                    <Text style={styles.addBtnOptionsEarningText}>+ Ganho</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={()=>{props.addTransactionOption("Spending")}}  style={styles.addBtnOptionsExpenseContainer}>
-                                    <Text style={styles.addBtnOptionsExpenseText}>- Gasto</Text>
-                                </TouchableOpacity>
-                            </View>
-                        :
-                            null
-                }
-                
-                <TouchableOpacity onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={styles.addTransactionButton}>
-                    <Ionicons name="add" size={44} color="white" />
-                </TouchableOpacity>
-            </View>
+                    {
+                        props.addTransactionsOptionsOpen
+                            ?
+                                <View style={styles.transactionsOptionsContainer}>
+                                    <TouchableOpacity onPress={()=>{props.addTransactionOption("Earning")}} style={styles.addBtnOptionsEarningContainer}>
+                                        <Text style={styles.addBtnOptionsEarningText}>+ Ganho</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>{props.addTransactionOption("Spending")}}  style={styles.addBtnOptionsExpenseContainer}>
+                                        <Text style={styles.addBtnOptionsExpenseText}>- Gasto</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            :
+                                null
+                    }
+                    
+                    <TouchableOpacity onPress={()=>{props.setAddTransactionsOptionsOpen(!props.addTransactionsOptionsOpen)}} style={styles.addTransactionButton}>
+                        <Ionicons name="add" size={44} color="white" />
+                    </TouchableOpacity>
+                </View>
             
         </MenuProvider>
     );
@@ -116,18 +159,38 @@ const styles = StyleSheet.create({
 
         flex: 1,
         flexDirection: "column",
-        paddingTop: Constants.statusBarHeight + 30,
-        backgroundColor: "#FF7E00",
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: "#1D1D1D",
+    },
+
+    topContainerMain:{
+
+        flexDirection: "row",
+        justifyContent: "space-between",
+        backgroundColor: "#1D1D1D",
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        elevation: 4,
+    },
+
+    mainContainer:{
+
+        width: "100%",
+        paddingTop: 50,
+        backgroundColor: "#F8F8F8",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 10
     },
 
     cardImagebackground:{
 
+        zIndex: 1,
         alignSelf: "stretch",
         flexDirection: "column",
         padding: 20,
         marginBottom: 30,
         borderRadius: 10,
-        elevation: 10,
+        elevation: 8,
         marginLeft: 20,
         marginRight: 20
 
@@ -135,7 +198,7 @@ const styles = StyleSheet.create({
 
     topContainer:{
 
-        marginBottom: 50,
+        marginBottom: 70,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
@@ -149,14 +212,14 @@ const styles = StyleSheet.create({
 
     fixedMessage:{
 
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: "700",
         color: "white"
     },
 
     usernameText:{
 
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: "700",
         color: "#FF7E00"
     },
@@ -180,68 +243,87 @@ const styles = StyleSheet.create({
 
     phraseText:{
 
-        fontSize: 13,
+        fontSize: 14,
         color: "white"
     },
 
     balanceTextCard:{
 
-        fontSize: 24,
-        fontWeight: "700",
+        fontSize: 28,
+        fontWeight: "900",
         color: "#FF7E00"
     },
 
     logo:{
 
-        width: "30%",
-        height: 30,
+        width: "44%",
+        height: 44,
     },
 
     resumeOfTransactionsContainer:{
 
         alignSelf: "stretch",
-        flexDirection: "column",
-        marginLeft: 20,
-        marginRight: 20,
+        flexDirection: "row",
+        margin: 20,
+        marginTop: 0
     },
 
-    resumeCardsContainer:{
-
-        flexDirection: "row",
-        justifyContent: "space-between",
-
+    resumeOfTransactionsContentContainer:{
+        
+        
+        justifyContent: "space-between", 
+        alignItems: "center",
     },
 
     resumeCardContainer:{
 
-        width: 114,
+        width: 260,
         flexDirection: "column",
         alignItems: "center",
         backgroundColor: "#FFFFFF",
-        borderRadius: 8,
-        elevation: 2,
+        borderRadius: 6,
         borderWidth: 1,
         borderColor: "#CBCBCB",
-        paddingTop: 16,
-        paddingBottom: 16
+        elevation: 6,
+        margin: 10,
+        paddingTop: 0,
+        paddingBottom: 20,
+        padding: 0
+    },
+
+    circleColorContainer:{
+
+        padding: 16,
+        borderRadius: 50,
+        marginBottom: 10
+    },
+
+    subcircleColorContainer:{
+
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 50,
     },
 
     cardTitleText:{
 
-        fontSize: 14,
-        fontWeight: "700"
+        padding: 4,
+        alignSelf: "stretch",
+        borderTopLeftRadius: 6,
+        borderTopRightRadius: 6,
+        backgroundColor: "red",
+        fontSize: 20,
+        marginBottom: 20,
+        fontWeight: "700",
+        textAlign: "center",
+        color: "white"
     },
 
     cardPriceText:{
         
-        fontSize: 14,
+        fontSize: 24,
         fontWeight: "700",
-        color: "#FF7E00"
-    },
-
-    chart:{
-
-        marginBottom: 30
+        color: "#1D1D1D"
     },
 
     transactionsContainer:{
@@ -250,7 +332,8 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         flexDirection: "column",
         alignSelf: "stretch",
-        backgroundColor: "white"
+        margin: 20,
+        marginBottom: 120,
 
     },
 
@@ -276,6 +359,9 @@ const styles = StyleSheet.create({
 
     transactionsListContainer:{
 
+        backgroundColor: "white",
+        borderRadius: 10,
+        elevation: 4,
         padding: 20
     },
 

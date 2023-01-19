@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword } from "firebase/auth";
 import { addDoc, collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, db, storage } from "./Firebase";
@@ -41,10 +41,11 @@ export class User{
 
                     resolve(url);
                 }).catch(err=>{
+                    console.log(err)
 
                     reject(err);
                 }).catch(err=>{
-
+                    console.log(err)
                     reject(err);
                 })
             })
@@ -94,6 +95,37 @@ export class User{
 
                 reject(err);
             })
+        });
+    }
+
+    static updateData(email, data, type){
+
+        return new Promise((resolve, reject)=>{
+
+            if(type == "username"){
+
+                updateDoc(doc(db, "users", email),{
+
+                    username: data
+                }).then(result=>{
+    
+                    resolve(result);
+                }).catch(err=>{
+    
+                    reject(err);
+                });
+            }else if(type == "password"){
+
+                const user = auth.currentUser;
+
+                updatePassword(user, data).then(result=>{
+
+                    resolve(resolve);
+                }).catch(err=>{
+
+                    reject(err);
+                });
+            }
         });
     }
 }

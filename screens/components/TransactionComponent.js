@@ -38,13 +38,9 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         paddingTop: 6,
         paddingBottom: 6,
-        paddingLeft: 6,
-        paddingRight: 6,
         flexDirection: "row",
         alignItems: "center",
-        elevation: 3,
         backgroundColor: "white",
-        borderRadius: 10
     },
 
     subContainer:{

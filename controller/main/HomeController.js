@@ -1,12 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, limit, onSnapshot, orderBy, query } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import React, { useContext, useEffect, useState } from "react";
 import TransactionComponent from "../../screens/components/TransactionComponent";
 import Home from "../../screens/main/Home"
 import { auth, db } from "../../utils/Firebase";
+import {UserDataContext} from "../../App";
 
-const HomeController = () =>{
+const HomeController = (props) =>{
+
+    const userDataContext = useContext(UserDataContext);
 
     const [userData, setUserData] = useState([]);
 
@@ -40,99 +43,63 @@ const HomeController = () =>{
         }
     }
 
-    
-
-
     useEffect(()=>{
 
+        const transactions = getDoc(doc(db, "users", userDataContext.email)).then(userData=>{
+            
+            setUserData(userData.data());
+        });
 
-        onAuthStateChanged(auth, user=>{
+        const transactionsQuery = query(
+            collection(db, "users", userDataContext.email, "transactions"), 
+            orderBy("date", "desc"));
+        getDocs(transactionsQuery).then(transactions=>{
 
-            if(user){
+            let transactionsListArray = [];
 
-                getDoc(doc(db, "users", user.email)).then(userData=>{
-                    
-                    setUserData(userData.data());
-                });
+            let earnings = 0;
+            let spendings = 0;
+            let sum = 0;
 
-                const transactionsQuery = query(
-                    collection(db, "users", user.email, "transactions"), 
-                    orderBy("date", "desc"));
-                getDocs(transactionsQuery).then(transactions=>{
-    
-                    let transactionsListArray = [];
+            if(!transactions.empty){
 
-                    let earnings = 0;
-                    let spendings = 0;
-                    let sum = 0;
-
-                    if(!transactions.empty){
-    
-                        transactions.forEach(transaction=>{
+                transactions.forEach(transaction=>{
 
 
-                            transactionsListArray.push(transaction.data());
-    
-                            if(transaction.data().type === "Earning"){
+                    transactionsListArray.push(transaction.data());
 
-                                earnings = earnings + parseFloat(transaction.data().value);
-                                sum = sum + parseFloat(transaction.data().value);
-                            }else{
+                    if(transaction.data().type === "Earning"){
 
-                                spendings = spendings + parseFloat(transaction.data().value);
-                                sum = sum - parseFloat(transaction.data().value);
-                            }
+                        earnings = earnings + parseFloat(transaction.data().value);
+                        sum = sum + parseFloat(transaction.data().value);
+                    }else{
 
-                        });
-
-                        setTotalEarnings(earnings);
-                        setTotalSpendings(spendings);
-                        setTotal(sum);
+                        spendings = spendings + parseFloat(transaction.data().value);
+                        sum = sum - parseFloat(transaction.data().value);
                     }
-                }).catch(err=>{
-    
-                    setTransactionsList(transactionsList);
+
                 });
+
+                let transactionsListArrayLimited = transactionsListArray.slice(0, 6);
+
+                setTotalEarnings(earnings);
+                setTotalSpendings(spendings);
+                setTotal(sum);
+                setTransactionsList(transactionsListArray);
+                setTransactionsListLimited(transactionsListArrayLimited);
+
             }
+        }).catch(err=>{
+
+            setTransactionsList(transactionsListArray);
+            setTransactionsListLimited(transactionsListLimited);
+        });
+
+        return(()=>{
+
+            transactions();
         });
     },[]);
-
-    useEffect(()=>{
-
-        onAuthStateChanged(auth, user=>{
-
-            if(user){
-
-                getDoc(doc(db, "users", user.email)).then(userData=>{
-                    
-                    setUserData(userData.data());
-                });
-
-                const transactionsQuery = query(
-                    collection(db, "users", user.email, "transactions"), 
-                    orderBy("date", "desc"),
-                    limit(6));
-                getDocs(transactionsQuery).then(transactions=>{
-    
-                    let transactionsListArray = [];
-
-                    if(!transactions.empty){
-    
-                        transactions.forEach(transaction=>{
-
-                            transactionsListArray.push(transaction.data());
-                        });
-
-                        setTransactionsListLimited(transactionsListArray);
-                    }
-                }).catch(err=>{
-    
-                });
-            }
-        });
-
-
-    },[transactionsListLimited]);
 
     const renderTransaction = ({item}) =>{
 
@@ -156,7 +123,7 @@ const HomeController = () =>{
             totalSpendigns={totalSpendings}
             total={total}
 
-            userData={userData}
+            userData={userDataContext}
 
             transactionsList={transactionsList}
             setTransactionsListLimited={setTransactionsListLimited}

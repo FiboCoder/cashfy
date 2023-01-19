@@ -85,7 +85,7 @@ const AddTransaction = (props) =>{
                     </View>
                 </TouchableWithoutFeedback>
 
-                <Text>{props.errorMessage}</Text>
+                <Text style={styles.errorMessageText}>{props.errorMessage}</Text>
 
                 
                 </ScrollView>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 60,
+        marginBottom: 50,
         borderWidth: 1,
         borderColor: "green",
         paddingTop: 12,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 60,
+        marginBottom: 50,
         borderWidth: 1,
         borderColor: "red",
         paddingTop: 12,
@@ -289,10 +289,17 @@ const styles = StyleSheet.create({
 
     },
 
+    errorMessageText:{
+
+        fontSize: 16,
+        textAlign: "center",
+        color: "red"
+    },
+
     addButtonGreen:{
 
         position: "absolute",
-        bottom: 0,
+        bottom: 0 + 10,
         alignSelf: "center",
         padding: 30,
         borderRadius: 100,
@@ -305,7 +312,7 @@ const styles = StyleSheet.create({
     addButtonRed:{
 
         position: "absolute",
-        bottom: 0,
+        bottom: 0 + 10,
         alignSelf: "center",
         padding: 30,
         borderRadius: 100,

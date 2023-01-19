@@ -5,9 +5,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../utils/Firebase";
+import { Image } from "react-native";
 
 
-const Profile = () =>{
+const Profile = (props) =>{
 
     const navigation = useNavigation();
 
@@ -27,14 +29,22 @@ const Profile = () =>{
             <View style={styles.userInfo}>
 
                 <View style={styles.imageProfileContainer}>
-                    <AntDesign style={styles.icon} name="user" size={44} color="#1D1D1D"/>
+                    {
+                        props.userData.imageUrl
+                        ?
+                            <Image width={130} height={130} style={styles.imageProfile} resizeMode={"center"} source={{uri: props.userData.imageUrl}}></Image>
+                        :
+                            <AntDesign name="user" size={44} color="#1D1D1D"/>
+
+                    }
                 </View>
-                <Text style={styles.usernameText}>Nome do usuário</Text>
+                
+                <Text style={styles.usernameText}>{props.userData.username}</Text>
             </View>
 
             <View style={styles.optionsContainer}>
 
-                <TouchableOpacity style={styles.optionButton}>
+                <TouchableOpacity onPress={()=>{navigation.navigate("PersonalInfoStack", {userData: props.userData})}} style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
                         <AntDesign style={styles.icon} name="user" size={24} color="white"/>
@@ -46,7 +56,7 @@ const Profile = () =>{
 
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.optionButton}>
+                {/*<TouchableOpacity style={styles.optionButton}>
 
                     <View style={styles.subContainerOptionButton}>
                         <Ionicons name="ios-image-outline" size={24} color="white" />
@@ -55,12 +65,12 @@ const Profile = () =>{
 
                     <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
                     
-                </TouchableOpacity>
+    </TouchableOpacity>*/}
 
 
             </View>
 
-            <TouchableOpacity style={styles.logoutButton}>
+            <TouchableOpacity onPress={()=>{auth.signOut()}} style={styles.logoutButton}>
 
                 <Ionicons style={styles.icon} name="exit-outline" size={24} color="white" />
                 <Text style={styles.personalInfoText}>Sair</Text>

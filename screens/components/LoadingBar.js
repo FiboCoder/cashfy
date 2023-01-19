@@ -9,9 +9,9 @@ const LoadingBar = () =>{
 
             <LottieView
             
-            style={{width: 100, height: 100}}
+            style={{width: 130, height: 130}}
                 autoPlay
-                source={require("../../assets/icons/loading.json")}
+                source={require("../../assets/icons/loading3.json")}
             />
         </View>
     );

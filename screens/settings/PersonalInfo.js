@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Constants from 'expo-constants';
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
@@ -6,27 +6,40 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import ModalGetImage from "../components/ModalGetImage";
+import LoadingBar from "../components/LoadingBar";
 
 const PersonalInfo = (props) =>{
 
+    console.log(props.userData)
     const navigation = useNavigation();
 
     return(
+
+        <>
 
         <View style={styles.container}>
 
             <View style={styles.headerContainer}>
 
-                <TouchableOpacity onPress={()=>{navigation.navigate("ProfileStack")}}>
+                <TouchableOpacity onPress={()=>{navigation.goBack()}}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="#1D1D1D" />
                 </TouchableOpacity>
 
                 <Text style={styles.titleText}>Informações Pessoais</Text>
             </View>
 
-            <View style={styles.imageProfileContainer}>
-                <AntDesign name="user" size={44} color="white"/>
-            </View>
+            <TouchableOpacity onPress={()=>{props.setShowImageSelectionModal(true)}} style={styles.imageProfileContainer}>
+
+                {
+                    props.userData.imageUrl
+                    ?
+                        <Image width={130} height={130} style={styles.imageProfile} resizeMode={"center"} source={{uri: props.userData.imageUrl}}></Image>
+                    :
+                        <AntDesign name="user" size={44} color="white"/>
+
+                }
+            </TouchableOpacity>
 
             <View style={styles.infoBoxContainer}>
 
@@ -36,7 +49,7 @@ const PersonalInfo = (props) =>{
                     !props.usernameClicked
                         ?
                             <>
-                                <Text style={styles.infoText}>Steave</Text>
+                                <Text style={styles.infoText}>{props.userData.username}</Text>
                                 <TouchableOpacity onPress={()=>{props.setUsernameClicked(true)}}>
                                     <MaterialCommunityIcons name="pencil" size={24} color="black" />
                                 </TouchableOpacity>
@@ -56,7 +69,7 @@ const PersonalInfo = (props) =>{
             <View style={styles.infoBoxContainer}>
 
                 <FontAwesome style={styles.icon} name="envelope-o" size={22} color="#ff7E00" />
-                <Text style={styles.infoText}>steave@steave.com</Text>
+                <Text style={styles.infoText}>{props.userData.email}</Text>
 
             </View>
 
@@ -84,7 +97,26 @@ const PersonalInfo = (props) =>{
                 
 
             </View>
+
+            
         </View>
+
+        {
+            props.showImageSelectionModal 
+                ? 
+                    <ModalGetImage 
+                        setImage={props.setImage} 
+                        getImageFromGallery={props.getImageFromGallery} 
+                        getImageFromCamera={props.getImageFromCamera} 
+                        setShowImageSelectionModal={props.setShowImageSelectionModal}
+                        showImageSelectionModal={props.showImageSelectionModal}
+                    /> 
+                :   
+                    null
+        }
+
+        { props.loading ? <LoadingBar/> : null}
+        </>
     );
 }
 
@@ -128,6 +160,14 @@ const styles = StyleSheet.create({
         backgroundColor: "#1D1D1D",
         marginBottom: 30,
         elevation: 8
+    },
+
+    imageProfile:{
+
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 100,
+
     },
 
     infoBoxContainer:{

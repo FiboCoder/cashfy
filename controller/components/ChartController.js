@@ -8,11 +8,13 @@ import { Transaction } from "../../utils/Transaction";
 
 const ChartController = (props) =>{
 
-    const [chartTime, setChartTime] = useState("week");
+    const [chartTime, setChartTime] = useState("Semana");
+    const [chartTimeFD, setChartTimeFD] = useState("");
     const [transactionsList, setTransactionsList] = useState([]);
     const [earningSum, setEarningSum] = useState(0);
     const [spendingSum, setSpendingSum] = useState(0);
     const [transferSum, setTransferSum] = useState(0);
+    const [totalSum, setTotalSum] = useState(0);
 
     const fetchData = (chartTime) =>{
 
@@ -60,6 +62,7 @@ const ChartController = (props) =>{
                         setEarningSum(eSum);
                         setSpendingSum(sSum);
                         setTransferSum(tSum);
+                        setTotalSum(totalSum);
 
                         setTransactionsList(transactionArray);
                     }
@@ -108,6 +111,7 @@ const ChartController = (props) =>{
                         setEarningSum(eSum);
                         setSpendingSum(sSum);
                         setTransferSum(tSum);
+                        setTotalSum(totalSum);
 
                         setTransactionsList(transactionArray);
                     }
@@ -156,6 +160,7 @@ const ChartController = (props) =>{
                         setEarningSum(eSum);
                         setSpendingSum(sSum);
                         setTransferSum(tSum);
+                        setTotalSum(totalSum);
 
                         setTransactionsList(transactionArray);
                     }
@@ -166,7 +171,7 @@ const ChartController = (props) =>{
 
     useEffect(()=>{
 
-        fetchData("week");
+        
     },[]);
 
     return(
@@ -174,11 +179,16 @@ const ChartController = (props) =>{
         <Chart
         
             setChartTime={setChartTime}
+            setChartTimeFD={setChartTimeFD}
 
             chartTime={chartTime}
+            chartTimeFD={chartTimeFD}
+
             earningSum={earningSum}
             spendingSum={spendingSum}
             transferSum={transferSum}
+
+            totalSum={totalSum}
 
             transactionsList={transactionsList}
 

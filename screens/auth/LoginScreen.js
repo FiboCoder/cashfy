@@ -91,9 +91,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "column",
         backgroundColor: "#1D1D1D",
-        paddingLeft: 30,
-        paddingRight: 30,
-        paddingTop: Constants.statusBarHeight
+        
         
     },
 
@@ -101,6 +99,9 @@ const styles = StyleSheet.create({
 
         alignItems: "center",
         width: "100%",
+        paddingLeft: 30,
+        paddingRight: 30,
+        paddingTop: Constants.statusBarHeight,
         marginTop: 30,
         
     

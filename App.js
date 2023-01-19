@@ -8,6 +8,7 @@ import TransactionsController from './controller/transactions/TransactionsContro
 import ProfileController from './controller/settings/ProfileController';
 import AddTransactionController from './controller/transactions/AddTransactionController';
 import TransactionDetailsController from './controller/transactions/TransactionDetailsController';
+import PersonalInfoController from './controller/settings/PersonalInfoController';
 import { LogBox, Text, View } from 'react-native';
 import SplashScreen from './screens/main/SplashScreen';
 import * as SecureStore from 'expo-secure-store';
@@ -15,6 +16,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './utils/Firebase';
 
 const AuthContext = React.createContext();
+export const UserDataContext = React.createContext();
 
 const SplashStack = () =>{
 
@@ -42,9 +44,11 @@ const LoginStack = () =>{
 
 const HomeStack = () =>{
 
+  const {userData} = React.useContext(UserDataContext);
+
   return(
 
-    <HomeController></HomeController>
+    <HomeController userData={userData}></HomeController>
   );
   
 }
@@ -62,6 +66,14 @@ const ProfileStack = () =>{
   return(
     
     <ProfileController></ProfileController>
+  );
+}
+
+const PersonalInfoStack = () =>{
+
+  return(
+    
+    <PersonalInfoController></PersonalInfoController>
   );
 }
 
@@ -95,7 +107,9 @@ function App() {
             ...prevState,
             userToken: action.token,
             isLoading: false,
+            userData: action.data
           };
+
         case 'SIGN_IN':
           if(action.token){
 
@@ -105,7 +119,9 @@ function App() {
             ...prevState,
             isSignout: false,
             userToken: action.token,
+            userData: action.data
           };
+
         case 'SIGN_OUT':
           SecureStore.deleteItemAsync('userToken');
           return {
@@ -119,6 +135,7 @@ function App() {
       isLoading: true,
       isSignout: false,
       userToken: null,
+      userData: []
     }
   );
 
@@ -139,17 +156,17 @@ function App() {
 
                 console.log("USER ID - " + user.uid + " - RESULT - " + result)
 
-                dispatch({ type: 'RESTORE_TOKEN', token: user.uid });
+                dispatch({ type: 'RESTORE_TOKEN', token: user.uid, data: user });
               }else{
                 console.log("DIFFERENT")
 
-                dispatch({ type: 'RESTORE_TOKEN', token: null });
+                dispatch({ type: 'RESTORE_TOKEN', token: null, data: user });
               }
             }else{
 
               console.log("NO USER")
 
-              dispatch({ type: 'RESTORE_TOKEN', token: null });
+              dispatch({ type: 'RESTORE_TOKEN', token: null, data: user });
             }
           });
         })
@@ -178,7 +195,7 @@ function App() {
         // After getting token, we need to persist the token using `SecureStore`
         // In the example, we'll use a dummy token
 
-        dispatch({ type: 'SIGN_IN', token: data });
+        dispatch({ type: 'SIGN_IN', token: data.uid, data: data });
       },
       signOut: () => dispatch({ type: 'SIGN_OUT' }),
       signUp: async (data) => {
@@ -189,43 +206,48 @@ function App() {
 
         dispatch({ type: 'SIGN_IN', token: data });
       },
+
+      userData: state.userData
     }),
     []
   );
 
   return (
 
-    <AuthContext.Provider value={authContext}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
+    <UserDataContext.Provider value={state.userData}>
+      <AuthContext.Provider value={authContext}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{headerShown: false}}>
 
-          {
-            state.isLoading == true
-              ?
-                <Stack.Screen name="SplashStack" component={SplashStack}/>
-              :
-                <>
-                  {state.userToken == null 
-                    ?
-                      <>
-                        <Stack.Screen name="LoginStack" component={LoginStack}/>
-                        <Stack.Screen name="RegisterStack" component={RegisterStack}/>
-                      </>
-                    :
-                      <>
-                        <Stack.Screen name="HomeStack" component={HomeStack}/>
-                        <Stack.Screen name="TransactionsStack" component={TransactionsStack}/>
-                        <Stack.Screen name="ProfileStack" component={ProfileStack}/>
-                        <Stack.Screen name="AddTransactionStack" component={AddTransactionStack}/>
-                        <Stack.Screen name="TransactionDetailsStack" component={TransactionDetails}/>
-                      </>
-                  }
-                </>
-          }
-        
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AuthContext.Provider>
+            {
+              state.isLoading == true
+                ?
+                  <Stack.Screen name="SplashStack" component={SplashStack}/>
+                :
+                  <>
+                    {state.userToken == null 
+                      ?
+                        <>
+                          <Stack.Screen name="LoginStack" component={LoginStack}/>
+                          <Stack.Screen name="RegisterStack" component={RegisterStack}/>
+                        </>
+                      :
+                        <>
+                          <Stack.Screen name="HomeStack" component={HomeStack}/>
+                          <Stack.Screen name="TransactionsStack" component={TransactionsStack}/>
+                          <Stack.Screen name="ProfileStack" component={ProfileStack}/>
+                          <Stack.Screen name="PersonalInfoStack" component={PersonalInfoStack}/>
+                          <Stack.Screen name="AddTransactionStack" component={AddTransactionStack}/>
+                          <Stack.Screen name="TransactionDetailsStack" component={TransactionDetails}/>
+                        </>
+                    }
+                  </>
+            }
+          
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AuthContext.Provider>
+    </UserDataContext.Provider>
   );
 }
 
