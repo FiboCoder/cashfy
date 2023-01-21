@@ -9,6 +9,8 @@ import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
 
 const Transactions = (props) =>{
 
+    console.log(props.dataToChart)
+
     const navigation = useNavigation();
     return(
 
@@ -27,52 +29,47 @@ const Transactions = (props) =>{
                 <View style={styles.chartTimeContainer}>
 
                     <Menu >
-                        <MenuTrigger style={styles.chartTimeMenu} text='Semana' />
+                        <MenuTrigger style={styles.chartTimeMenu} text={props.chartTime} />
                         <MenuOptions>
-                            <MenuOption  onSelect={() => alert(`Week`)} text='Semana'/>
-                            <MenuOption onSelect={() => alert(`month`)} text="Mês"/>
-                            <MenuOption onSelect={() => alert(`year`)} text="Ano"/>
+                            <MenuOption onSelect={() => props.setChartTime("Semana")} text='Semana'/>
+                            <MenuOption onSelect={() => props.setChartTime("Mês")} text="Mês"/>
+                            <MenuOption onSelect={() => props.setChartTime("Ano")} text="Ano"/>
                         </MenuOptions>
                     </Menu>
 
                     <Menu>
-                        <MenuTrigger style={styles.chartTimeMenu} text='Ganhos' />
+                        <MenuTrigger style={styles.chartTimeMenu} text={props.transactionType} />
                         <MenuOptions>
-                            <MenuOption onSelect={() => alert(`Earnings`)} text='Ganhos'/>
-                            <MenuOption onSelect={() => alert(`Spendings`)} text="Gastos"/>
-                            <MenuOption onSelect={() => alert(`Transfers`)} text="Transferências"/>
+                            <MenuOption onSelect={() => props.setTransactionType("Ganhos")} text='Ganhos'/>
+                            <MenuOption onSelect={() => props.setTransactionType("Gastos")} text="Gastos"/>
+                            <MenuOption onSelect={() => props.setTransactionType("Transferências")} text="Transferências"/>
                         </MenuOptions>
                     </Menu>
                 </View>
 
                 <VictoryChart
-                    width={Dimensions.get("window").width * 0.94}
+                    width={Dimensions.get("window").width * 0.8}
                     height={Dimensions.get("window").width * 0.6 }
                     theme={VictoryTheme.material}
-                    domainPadding={{ x: 16 }}
+                    domainPadding={{ x: 20 }}
                     >
                     <VictoryBar
-                        barRatio={0.8}
+                        barRatio={0.6}
                         style={{
                             
                         data: { fill: "#FF7E00" }
                         }}
-                        data={[
-                            { x: 1, y: 2, y0: 0 },
-                            { x: 2, y: 3, y0: 0 },
-                            { x: 3, y: 5, y0: 0 },
-                            { x: 4, y: 4, y0: 0 },
-                            { x: 5, y: 1, y0: 0 },
-                            { x: 6, y: 2, y0: 0 },
-                            { x: 7, y: 5, y0: 0 },
-                          ]}
+                        data={props.dataToChart}
                     />
                 </VictoryChart>
             </View>
 
             <ScrollView style={styles.listContainer}>
 
-                <Text>Olá</Text>
+                <FlatList
+                    data={props.transactionsList}
+                    renderItem={props.renderTransaction}
+                ></FlatList>
 
                 
             </ScrollView>
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
     container:{
 
         flex: 1,
-        backgroundColor: "white",
+        backgroundColor: "#F8F8F8",
         paddingTop: Constants.statusBarHeight + 30
     },
 
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         marginBottom: 30,
         marginLeft: 24,
-        marginRight: 24, 
+        marginRight: 24,
 
     },
 
@@ -131,19 +128,22 @@ const styles = StyleSheet.create({
 
     chartTimeMenu:{
 
-        padding: 10,
-        paddingHorizontal: 20,
+        padding: 12,
+        paddingHorizontal: 40,
         borderRadius: 6,
         backgroundColor: "#E6E6E6"
     },
 
     listContainer:{
 
+        backgroundColor: "white",
         borderColor: "#E6E6E6",
         borderRadius: 10,
-        borderTopLeftRadius: 0,
+        marginTop: 20,
         marginLeft: 24,
         marginRight: 24,
+        elevation: 4,
+        padding: 10
     }
 });
 

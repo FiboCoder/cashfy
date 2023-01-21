@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, onSnapshot, orderBy, query } from "firebase/firestore";
 import React, { useContext, useEffect, useState } from "react";
 import TransactionComponent from "../../screens/components/TransactionComponent";
 import Home from "../../screens/main/Home"
@@ -45,17 +45,17 @@ const HomeController = (props) =>{
 
     useEffect(()=>{
 
-        const transactions = getDoc(doc(db, "users", userDataContext.email)).then(userData=>{
-            
+        
+        const userDataSnapshot = onSnapshot(doc(db, "users", userDataContext.email), (userData)=>{
+
             setUserData(userData.data());
         });
 
-        const transactionsQuery = query(
+        const transactionsSnapshot = onSnapshot(
             collection(db, "users", userDataContext.email, "transactions"), 
-            orderBy("date", "desc"));
-        getDocs(transactionsQuery).then(transactions=>{
+            orderBy("date", "desc"), (transactions)=>{
 
-            let transactionsListArray = [];
+                let transactionsListArray = [];
 
             let earnings = 0;
             let spendings = 0;
@@ -89,15 +89,12 @@ const HomeController = (props) =>{
                 setTransactionsListLimited(transactionsListArrayLimited);
 
             }
-        }).catch(err=>{
-
-            setTransactionsList(transactionsListArray);
-            setTransactionsListLimited(transactionsListLimited);
-        });
+            });
 
         return(()=>{
 
-            transactions();
+            userDataSnapshot();
+            transactionsSnapshot();
         });
     },[]);
 
@@ -123,7 +120,7 @@ const HomeController = (props) =>{
             totalSpendigns={totalSpendings}
             total={total}
 
-            userData={userDataContext}
+            userData={userData}
 
             transactionsList={transactionsList}
             setTransactionsListLimited={setTransactionsListLimited}

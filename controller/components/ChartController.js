@@ -16,163 +16,160 @@ const ChartController = (props) =>{
     const [transferSum, setTransferSum] = useState(0);
     const [totalSum, setTotalSum] = useState(0);
 
-    const fetchData = (chartTime) =>{
+    const fetchData = () =>{
 
-        switch(chartTime){
 
-            case "week":
-                setChartTime("Semana");
-                Transaction.recoverTransactionToChart(props.userData.email, chartTime).then(transactions=>{
+        if(chartTime == "Semana"){
 
-                    if(!transactions.empty){
+            Transaction.recoverTransactionToChart(props.userData.email, "week").then(transactions=>{
 
-                        let transactionArray = [];
+                if(!transactions.empty){
 
-                        let eSum = 0;
-                        let sSum = 0;
-                        let tSum = 0;
+                    let transactionArray = [];
 
-                        transactions.forEach(transaction=>{
+                    let eSum = 0;
+                    let sSum = 0;
+                    let tSum = 0;
 
-                            if(transaction.data().type == "Earning"){
+                    transactions.forEach(transaction=>{
 
-                                eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else if(transaction.data().type == "Spending"){
+                        if(transaction.data().type == "Earning"){
 
-                                sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else{
+                            eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else if(transaction.data().type == "Spending"){
 
-                                
-                                tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }
-                        });
+                            sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else{
 
-                        let totalSum = eSum + sSum + tSum;
+                            
+                            tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }
+                    });
 
-                        let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
-                        let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
-                        let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
+                    let totalSum = eSum + sSum + tSum;
 
-                        transactionArray = [
-                            {x: eSumPercent+"%", y: eSumPercent},
-                            {x: sSumPercent+"%", y: sSumPercent},
-                            {x: tSumPercent+"%", y: tSumPercent}
-                        ];
+                    let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
+                    let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
+                    let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
 
-                        setEarningSum(eSum);
-                        setSpendingSum(sSum);
-                        setTransferSum(tSum);
-                        setTotalSum(totalSum);
+                    transactionArray = [
+                        {x: eSumPercent+"%", y: eSumPercent},
+                        {x: sSumPercent+"%", y: sSumPercent},
+                        {x: tSumPercent+"%", y: tSumPercent}
+                    ];
 
-                        setTransactionsList(transactionArray);
-                    }
-                });
-                break;
+                    setEarningSum(eSum);
+                    setSpendingSum(sSum);
+                    setTransferSum(tSum);
+                    setTotalSum(totalSum);
 
-            case "month":
-                setChartTime("Mês");
-                Transaction.recoverTransactionToChart(props.userData.email, chartTime).then(transactions=>{
+                    setTransactionsList(transactionArray);
+                }
+            });
 
-                    if(!transactions.empty){
+        }else if(chartTime ==  "Mês"){
 
-                        let transactionArray = [];
+            Transaction.recoverTransactionToChart(props.userData.email, "month").then(transactions=>{
 
-                        let eSum = 0;
-                        let sSum = 0;
-                        let tSum = 0;
+                if(!transactions.empty){
 
-                        transactions.forEach(transaction=>{
+                    let transactionArray = [];
 
-                            if(transaction.data().type == "Earning"){
+                    let eSum = 0;
+                    let sSum = 0;
+                    let tSum = 0;
 
-                                eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else if(transaction.data().type == "Spending"){
+                    transactions.forEach(transaction=>{
 
-                                sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else{
+                        if(transaction.data().type == "Earning"){
 
-                                
-                                tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }
-                        });
+                            eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else if(transaction.data().type == "Spending"){
 
-                        let totalSum = eSum + sSum + tSum;
+                            sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else{
 
-                        let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
-                        let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
-                        let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
+                            
+                            tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }
+                    });
 
-                        transactionArray = [
-                            {x: eSumPercent+"%", y: eSumPercent},
-                            {x: sSumPercent+"%", y: sSumPercent},
-                            {x: tSumPercent+"%", y: tSumPercent}
-                        ];
-                        
-                        setEarningSum(eSum);
-                        setSpendingSum(sSum);
-                        setTransferSum(tSum);
-                        setTotalSum(totalSum);
+                    let totalSum = eSum + sSum + tSum;
 
-                        setTransactionsList(transactionArray);
-                    }
-                });
-                break;
+                    let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
+                    let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
+                    let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
 
-            case "year":
-                setChartTime("Ano");
-                Transaction.recoverTransactionToChart(props.userData.email, chartTime).then(transactions=>{
+                    transactionArray = [
+                        {x: eSumPercent+"%", y: eSumPercent},
+                        {x: sSumPercent+"%", y: sSumPercent},
+                        {x: tSumPercent+"%", y: tSumPercent}
+                    ];
+                    
+                    setEarningSum(eSum);
+                    setSpendingSum(sSum);
+                    setTransferSum(tSum);
+                    setTotalSum(totalSum);
 
-                    if(!transactions.empty){
+                    setTransactionsList(transactionArray);
+                }
+            });
+                
 
-                        let transactionArray = [];
+        }else if(chartTime == "Ano"){
+                
+            Transaction.recoverTransactionToChart(props.userData.email, "year").then(transactions=>{
 
-                        let eSum = 0;
-                        let sSum = 0;
-                        let tSum = 0;
+                if(!transactions.empty){
 
-                        transactions.forEach(transaction=>{
+                    let transactionArray = [];
 
-                            if(transaction.data().type == "Earning"){
+                    let eSum = 0;
+                    let sSum = 0;
+                    let tSum = 0;
 
-                                eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else if(transaction.data().type == "Spending"){
+                    transactions.forEach(transaction=>{
 
-                                sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }else{
+                        if(transaction.data().type == "Earning"){
 
-                                
-                                tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
-                            }
-                        });
+                            eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else if(transaction.data().type == "Spending"){
 
-                        let totalSum = eSum + sSum + tSum;
+                            sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }else{
 
-                        let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
-                        let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
-                        let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
+                            
+                            tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
+                        }
+                    });
 
-                        transactionArray = [
-                            {x: eSumPercent+"%", y: eSumPercent},
-                            {x: sSumPercent+"%", y: sSumPercent},
-                            {x: tSumPercent+"%", y: tSumPercent}
-                        ];
+                    let totalSum = eSum + sSum + tSum;
 
-                        setEarningSum(eSum);
-                        setSpendingSum(sSum);
-                        setTransferSum(tSum);
-                        setTotalSum(totalSum);
+                    let eSumPercent = parseFloat(((eSum*100)/totalSum).toFixed(2));
+                    let sSumPercent = parseFloat(((sSum*100)/totalSum).toFixed(2));
+                    let tSumPercent = parseFloat(((tSum*100)/totalSum).toFixed(2));
 
-                        setTransactionsList(transactionArray);
-                    }
-                });
-                break;
+                    transactionArray = [
+                        {x: eSumPercent+"%", y: eSumPercent},
+                        {x: sSumPercent+"%", y: sSumPercent},
+                        {x: tSumPercent+"%", y: tSumPercent}
+                    ];
+
+                    setEarningSum(eSum);
+                    setSpendingSum(sSum);
+                    setTransferSum(tSum);
+                    setTotalSum(totalSum);
+
+                    setTransactionsList(transactionArray);
+                }
+            });
         }
     }
 
     useEffect(()=>{
 
-        
-    },[]);
+        fetchData()
+    },[chartTime]);
 
     return(
 
@@ -196,6 +193,7 @@ const ChartController = (props) =>{
             
         ></Chart>
     );
+
 }
 
 export default ChartController;

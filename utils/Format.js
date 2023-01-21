@@ -5,6 +5,11 @@ export class Format{
 
     }
 
+    static getDayOfTimestamp(timestamp){
+
+        return new Date(timestamp).getDay();
+    }
+
     static timeStampToDate(timestamp){
 
         let date = new Date(timestamp);
