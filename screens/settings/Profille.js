@@ -52,7 +52,7 @@ const Profile = (props) =>{
                     </View>
                     
 
-                    <MaterialIcons name="arrow-forward-ios" size={22} color="#1D1D1D" />
+                    <MaterialIcons name="arrow-forward-ios" size={22} color="white" />
 
                 </TouchableOpacity>
 
@@ -126,6 +126,15 @@ const styles = StyleSheet.create({
         backgroundColor: "#EEEEEE",
         marginBottom: 30,
         elevation: 8
+    },
+
+    imageProfile:{
+
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 100,
     },
 
     usernameText:{

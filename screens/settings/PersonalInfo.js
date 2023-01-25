@@ -11,7 +11,7 @@ import LoadingBar from "../components/LoadingBar";
 
 const PersonalInfo = (props) =>{
 
-    console.log(props.userData)
+    console.log(props.userData.email)
     const navigation = useNavigation();
 
     return(
@@ -164,6 +164,8 @@ const styles = StyleSheet.create({
 
     imageProfile:{
 
+        width: "100%",
+        height: "100%",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 100,

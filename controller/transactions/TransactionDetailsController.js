@@ -1,7 +1,7 @@
 import { useRoute } from "@react-navigation/native";
 import TransactionDetails from "../../screens/transactions/TransactionDetails";
 
-const TransactionDetailsController = () =>{
+const TransactionDetailsController = (props) =>{
 
     const route = useRoute();
 

@@ -6,19 +6,20 @@ import { Svg } from "react-native-svg";
 
 const Chart = (props) =>{
 
+
     return(
 
             <View style={styles.chartContainer}>
 
                 <View style={styles.timeChartContainer}>
 
-                    <TouchableOpacity onPress={()=>{props.setChartTime("Semana"), props.fetchData("week")}}>
+                    <TouchableOpacity onPress={()=>{props.setChartTime("Semana")}}>
                         <Text style={props.chartTime == "Semana" ? styles.timeChartTextActive : styles.timeChartText}>Semana</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.setChartTime("Mês"), props.fetchData("month")}}>
+                    <TouchableOpacity onPress={()=>{props.setChartTime("Mês")}}>
                         <Text style={props.chartTime == "Mês" ? styles.timeChartTextActive : styles.timeChartText}>Mês</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{props.setChartTime("Ano"), props.fetchData("year")}}>
+                    <TouchableOpacity onPress={()=>{props.setChartTime("Ano")}}>
                         <Text style={props.chartTime == "Ano" ? styles.timeChartTextActive : styles.timeChartText}>Ano</Text>
                     </TouchableOpacity>
                 </View>
@@ -59,12 +60,12 @@ const Chart = (props) =>{
 
                         />
 
-                        <VictoryLabel
+                        {/*<VictoryLabel
                                 textAnchor="middle"
                                 style={{ fontSize: 20 }}
                                 x={Dimensions.get('window').width * 0.45} y={Dimensions.get('window').width * 0.45}
                                 text={props.totalSum != 0 ? props.totalSum : ""}
-                                />
+                        />*/}
                     </Svg>
                     
                     
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        padding: 20,
+        padding: 20
     },
 
     timeChartContainer:{
@@ -163,7 +164,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderTopLeftRadius: 0,
         borderRadius: 10,
-        elevation: 4
+        borderWidth: 1,
+        borderColor: "#E6E6E6"
     },
 
     titleText:{

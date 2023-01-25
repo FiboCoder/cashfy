@@ -3,8 +3,9 @@ import Constants from 'expo-constants';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { Format } from "../../utils/Format";
 
-const TransactionDetails = () =>{
+const TransactionDetails = (props) =>{
 
     const navigation = useNavigation();
 
@@ -14,7 +15,7 @@ const TransactionDetails = () =>{
 
             <View style={styles.headerContainer}>
 
-                <TouchableOpacity onPress={()=>{navigation.navigate("HomeStack")}}>
+                <TouchableOpacity onPress={()=>{{props.route == "Transactions" ? navigation.navigate("TransactionsStack") : navigation.navigate("HomeStack")}}}>
                     <MaterialIcons name="arrow-back-ios" size={24} color="white" />
                 </TouchableOpacity>
 
@@ -25,10 +26,10 @@ const TransactionDetails = () =>{
                     <SimpleLineIcons name="handbag" size={28} color="#1D1D1D" />
             </View>
 
-            <Text style={styles.transactionNameText}>Salário</Text>
-            <Text style={styles.transactionCategoryText}>Categoria</Text>
-            <Text style={styles.transactionValueText}>R$3.000,00</Text>
-            <Text style={styles.transactionDescriptionText}>Salário Mulher Magnética</Text>
+            <Text style={styles.transactionNameText}>{props.transaction.name}</Text>
+            <Text style={styles.transactionCategoryText}>{props.transaction.category}</Text>
+            <Text style={styles.transactionValueText}>{"R$" + Format.intToReal(props.transaction.value)}</Text>
+            <Text style={styles.transactionDescriptionText}>{props.transaction.description}</Text>
         </View>
     );
     

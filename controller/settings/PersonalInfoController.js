@@ -28,23 +28,15 @@ const PersonalInfoController = () =>{
             aspect: [1,1]
           });
       
-          console.log(image);
-      
           if (!image.canceled) {
-            setLoading(true);
 
+            setLoading(true);
             setShowImageSelectionModal(false);
             setImage(image.assets.uri);
-            let response = await fetch(image.assets.uri);
-            let blob = await response.blob();
-            User.uploadImage(route.params.userData.email, blob).then(result=>{
+            saveImage(image)
+          }else{
 
-                setLoading(false)
-            }).catch(err=>{
-
-                setLoading(false);
-            });
-            console.log("data:image/jpg;base64,"+image.base64);
+            setLoading(false);
           }
     }
 
@@ -64,17 +56,31 @@ const PersonalInfoController = () =>{
 
             setLoading(true);
             setShowImageSelectionModal(false);
-            setImage(image.assets.uri);
-            let response = await fetch(image.assets.uri);
-            let blob = await response.blob();
-            User.uploadImage(route.params.userData.email, blob).then(result=>{
+            setImage(image.uri);
+            saveImage(image)
+        }else{
 
-                setLoading(false)
+            setLoading(false);
+        }
+    }
+
+    const saveImage = async (image) => {
+
+        let response = await fetch(image.uri);
+        let blob = await response.blob();
+        User.uploadImage(route.params.userData.email, blob).then(imageRef=>{
+
+            User.updateData(route.params.userData.email, imageRef, "imageUrl").then(result=>{
+
+                setLoading(false);
             }).catch(err=>{
 
                 setLoading(false);
             });
-        }
+        }).catch(err=>{
+
+            setLoading(false);
+        });
     }
 
     const updateUserData = (field) =>{

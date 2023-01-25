@@ -37,6 +37,8 @@ export class User{
             let imageRef = ref(storage, path);
             uploadBytes(imageRef, blob).then(snapshot=>{
 
+                console.log(snapshot)
+
                 getDownloadURL(imageRef).then(url=>{
 
                     resolve(url);
@@ -123,6 +125,18 @@ export class User{
                     resolve(resolve);
                 }).catch(err=>{
 
+                    reject(err);
+                });
+            }else if(type == "imageUrl"){
+
+                updateDoc(doc(db, "users", email),{
+
+                    imageUrl: data
+                }).then(result=>{
+    
+                    resolve(result);
+                }).catch(err=>{
+    
                     reject(err);
                 });
             }

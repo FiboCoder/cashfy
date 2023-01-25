@@ -2,14 +2,27 @@ import { Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, V
 import Constants from 'expo-constants';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import TransactionComponent from "../components/TransactionComponent";
 import { useNavigation } from "@react-navigation/native";
 import { Menu, MenuOption, MenuOptions, MenuProvider, MenuTrigger } from "react-native-popup-menu";
-import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
+import { VictoryBar, VictoryChart, VictoryLabel, VictoryTheme } from "victory-native";
 
 const Transactions = (props) =>{
 
-    console.log(props.dataToChart)
+    const getBarColor = () =>{
+
+        switch(props.transactionType){
+
+            case "Ganhos":
+                return "green";
+       
+            case "Gastos":
+                return "red";
+
+            case "Transferências":
+                return "lightgray";
+        }
+
+    }
 
     const navigation = useNavigation();
     return(
@@ -48,18 +61,22 @@ const Transactions = (props) =>{
                 </View>
 
                 <VictoryChart
-                    width={Dimensions.get("window").width * 0.8}
+
+                    width={Dimensions.get("window").width * 0.9}
                     height={Dimensions.get("window").width * 0.6 }
                     theme={VictoryTheme.material}
-                    domainPadding={{ x: 20 }}
+                    domainPadding={{x: [16, 16]}}
+                    padding={{ top: 50, bottom: 40, left: 64, right: 26 }}
+                    
                     >
                     <VictoryBar
                         barRatio={0.6}
                         style={{
                             
-                        data: { fill: "#FF7E00" }
+                        data: { fill: getBarColor() }
                         }}
                         data={props.dataToChart}
+                        
                     />
                 </VictoryChart>
             </View>
@@ -140,6 +157,7 @@ const styles = StyleSheet.create({
         borderColor: "#E6E6E6",
         borderRadius: 10,
         marginTop: 20,
+        marginBottom: 10,
         marginLeft: 24,
         marginRight: 24,
         elevation: 4,
