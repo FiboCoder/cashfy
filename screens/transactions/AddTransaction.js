@@ -12,11 +12,87 @@ import LoadingBar from "../components/LoadingBar";
 
 const AddTransaction = (props) =>{
 
+
     const navigation = useNavigation();
+
+    const getContainerStyle = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return styles.containerGreen;
+
+            case "Spending":
+                return styles.containerRed;
+
+            case "Transfer":
+                return styles.containerGray;
+        }
+    }
+
+    const getBoxStyle = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return styles.boxStyleGreen;
+
+            case "Spending":
+                return styles.boxStyleRed;
+
+            case "Transfer":
+                return styles.boxStyleGray;
+        }
+    }
+
+    const getDropdownStyle = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return styles.dropdownStyleGreen;
+
+            case "Spending":
+                return styles.dropdownStyleRed;
+
+            case "Transfer":
+                return styles.dropdownStyleGray;
+        }
+    }
+
+    const getAddButtonStyle = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return styles.addButtonGreen;
+
+            case "Spending":
+                return styles.addButtonRed;
+
+            case "Transfer":
+                return styles.addButtonGray;
+        }
+    }
+
+    const getDateButtonStyle = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return styles.dateButtonGreen;
+
+            case "Spending":
+                return styles.dateButtonRed;
+
+            case "Transfer":
+                return styles.dateButtonGray;
+        }
+    }
 
     return(
 
-        <View style={props.transactionTypeRoute == "Earning" ? styles.containerGreen : styles.containerRed}>
+        <View style={getContainerStyle()}>
 
             <View style={styles.headerContainer}>
 
@@ -45,7 +121,7 @@ const AddTransaction = (props) =>{
 
                 <Text style={styles.fieldTitleText}>Título</Text>
 
-                <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
+                <View style={ getBoxStyle() } >
 
                     <MaterialIcons name="title" size={24} color="#565656" />
                     <TextInput onChangeText={(val)=>{props.setTransactionName(val)}} style={styles.textInputMain} placeholder="Títuo">{props.transactionName}</TextInput>
@@ -54,7 +130,7 @@ const AddTransaction = (props) =>{
 
                 <Text style={styles.fieldTitleText}>Descrição</Text>
 
-                <View style={ props.transactionTypeRoute == "Earning" ? styles.textInputContainerGreen : styles.textInputContainerRed } >
+                <View style={ getBoxStyle() } >
 
                     <MaterialIcons name="subtitles" size={24} color="#565656" />
                     <TextInput onChangeText={(val)=>{props.setTransactionDescription(val)}} style={styles.textInputMain} placeholder="Descrição">{props.transactionDescription}</TextInput>
@@ -65,8 +141,8 @@ const AddTransaction = (props) =>{
 
                 <SelectList 
 
-                    boxStyles={props.transactionTypeRoute == "Earning" ? styles.boxStyleGreen : styles.boxStyleRed} 
-                    dropdownStyles={props.transactionTypeRoute == "Earning" ?  styles.dropdownStyleGreen : styles.dropdownStyleRed } 
+                    boxStyles={ getBoxStyle() } 
+                    dropdownStyles={ getDropdownStyle() } 
                     inputStyles={styles.inputStyle} 
                     search={false} 
                     placeholder={"Selecionar Opção"} 
@@ -79,7 +155,7 @@ const AddTransaction = (props) =>{
                 <Text style={styles.fieldTitleText}>Data</Text>
 
                 <TouchableWithoutFeedback onPress={props.showDatePicker} style={props.transactionTypeRoute == "Earning" ?  styles.textInputMain : styles.textInputMain}>
-                    <View style={props.transactionTypeRoute == "Earning" ?  styles.dateButtonGreen : styles.dateButtonRed}>
+                    <View style={ getDateButtonStyle() }>
                         <AntDesign name="calendar" size={24} color="#565656" />
                         <Text style={styles.transactionDateText} placeholder="Data da transação">{props.transactionDate.toLocaleDateString()}</Text>
                     </View>
@@ -92,7 +168,7 @@ const AddTransaction = (props) =>{
             </View>
             <TouchableOpacity 
                     onPress={()=>{props.saveTransaction()}} 
-                    style={props.transactionTypeRoute == "Earning" ? styles.addButtonGreen : styles.addButtonRed}>
+                    style={ getAddButtonStyle() }>
                         <AntDesign name="check" size={24} color="white" />
             </TouchableOpacity>
 
@@ -114,6 +190,13 @@ const styles = StyleSheet.create({
 
         flex: 1,
         backgroundColor: "red",
+        paddingTop: Constants.statusBarHeight + 30
+    },
+
+    containerGray:{
+
+        flex: 1,
+        backgroundColor: "gray",
         paddingTop: Constants.statusBarHeight + 30
     },
 
@@ -242,29 +325,61 @@ const styles = StyleSheet.create({
 
     },
 
+    dateButtonGray:{
+
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 50,
+        borderWidth: 1,
+        borderColor: "gray",
+        paddingTop: 12,
+        paddingBottom: 12,
+        paddingLeft: 12,
+        padding: 18,
+        borderRadius: 8,
+
+    },
+
     transactionDateText:{
 
         marginLeft: 10
     },
 
     boxStyleGreen:{
+
         flexDirection: "row",
         marginBottom: 14, 
-        paddingTop: 14, 
-        paddingBottom: 14, 
-        borderWith: 1, 
+        paddingTop: 12, 
+        paddingBottom: 12,
+        paddingLeft: 12,
+        borderWidth: 1, 
         borderColor: "green", 
         borderRadius: 8,
 
     },
 
     boxStyleRed:{
+
         flexDirection: "row",
         marginBottom: 14, 
-        paddingTop: 14, 
-        paddingBottom: 14, 
-        borderWith: 1, 
+        paddingTop: 12, 
+        paddingBottom: 12,
+        paddingLeft: 12,
+        borderWidth: 1, 
         borderColor: "red", 
+        borderRadius: 8,
+
+    },
+
+    boxStyleGray:{
+
+        flexDirection: "row",
+        marginBottom: 14, 
+        paddingTop: 12, 
+        paddingBottom: 12, 
+        paddingLeft: 12,
+        borderWidth: 1, 
+        borderColor: "gray", 
         borderRadius: 8,
 
     },
@@ -282,6 +397,14 @@ const styles = StyleSheet.create({
         marginBottom: 14, 
         borderWith: 1, 
         borderColor: "red"
+
+    },
+
+    dropdownStyleGray:{
+
+        marginBottom: 14, 
+        borderWith: 1, 
+        borderColor: "gray"
 
     },
 
@@ -318,6 +441,19 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         alignItems: "center",
         backgroundColor: "red",
+        elevation: 4
+
+    },
+
+    addButtonGray:{
+
+        position: "absolute",
+        bottom: 0 + 10,
+        alignSelf: "center",
+        padding: 30,
+        borderRadius: 100,
+        alignItems: "center",
+        backgroundColor: "gray",
         elevation: 4
 
     },

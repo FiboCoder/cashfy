@@ -20,6 +20,8 @@ const AddTransactionController = (props) =>{
     const navigation = useNavigation();
     const route = useRoute();
 
+    console.log(route.params.transactionType)
+
     const data = [
         
         { key:"1", value:"Restaurante" },
@@ -79,6 +81,19 @@ const AddTransactionController = (props) =>{
                                 if(route.params.transactionType == "Earning"){
 
                                     let balance = parseFloat(route.params.userData.balance) + parseFloat(Format.intToCurrency(transactionValue));
+                                    User.updateBalance(String(balance.toFixed(2)), route.params.userData.email).then(result=>{
+
+                                        setTransactionValue("");
+                                        setTransactionName("");
+                                        setTransactionDescription("");
+                                        setTransactionCategory("");
+                                        setTransactionDate(new Date());
+                                        setIsLoading(false);
+                                        navigation.goBack();
+                                    });
+                                }else if(route.params.transactionType == "Spending"){
+
+                                    let balance = parseFloat(route.params.userData.balance) - parseFloat(Format.intToCurrency(transactionValue));
                                     User.updateBalance(String(balance.toFixed(2)), route.params.userData.email).then(result=>{
 
                                         setTransactionValue("");

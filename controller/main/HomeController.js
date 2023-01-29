@@ -17,6 +17,7 @@ const HomeController = (props) =>{
 
     const [totalEarnings, setTotalEarnings] = useState(0);
     const [totalSpendings, setTotalSpendings] = useState(0);
+    const [totalTransfers, setTotalTransfers] = useState(0);
     const [total, setTotal] = useState(0);
 
     const [pressedButton, setPressedButton] = useState("Balance");
@@ -48,20 +49,26 @@ const HomeController = (props) =>{
             case "Spending":
                 navigation.navigate("AddTransactionStack", {transactionType: "Spending", userData});
                 break;
+
+            case "Transfer":
+                navigation.navigate("AddTransactionStack", {transactionType: "Transfer", userData});
+                break;
         }
     }
 
     const fetchData = () =>{
 
-        console.log("ENTROU")
+        console.log("TESTE FETCH DATA - " + userDataContext.email)
 
         if(chartTime == "Semana"){
 
-            console.log("ENTROU")
-
             Transaction.recoverTransactionToChart(userDataContext.email, "week").then(transactions=>{
 
+                console.log(transactions.empty)
+
                 if(!transactions.empty){
+
+
 
                     let transactionArray = [];
 
@@ -71,9 +78,12 @@ const HomeController = (props) =>{
 
                     transactions.forEach(transaction=>{
 
+                        console.log(" AAAAAAAAAAAAAAAAAAAAAAAA " + transaction.data().value)
+
                         if(transaction.data().type == "Earning"){
 
                             eSum = eSum + parseFloat(Format.intToCurrency(transaction.data().value));
+
                         }else if(transaction.data().type == "Spending"){
 
                             sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
@@ -126,7 +136,6 @@ const HomeController = (props) =>{
                             sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
                         }else{
 
-                            
                             tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
                         }
                     });
@@ -175,7 +184,6 @@ const HomeController = (props) =>{
                             sSum = sSum + parseFloat(Format.intToCurrency(transaction.data().value));
                         }else{
 
-                            
                             tSum = tSum + parseFloat(Format.intToCurrency(transaction.data().value));
                         }
                     });
@@ -216,38 +224,44 @@ const HomeController = (props) =>{
 
                 let transactionsListArray = [];
 
-            let earnings = 0;
-            let spendings = 0;
-            let sum = 0;
+                let earnings = 0;
+                let spendings = 0;
+                let transfers = 0;
+                let sum = 0;
 
-            if(!transactions.empty){
+                if(!transactions.empty){
 
-                transactions.forEach(transaction=>{
+                    transactions.forEach(transaction=>{
 
 
-                    transactionsListArray.push(transaction.data());
+                        transactionsListArray.push(transaction.data());
 
-                    if(transaction.data().type === "Earning"){
+                        if(transaction.data().type === "Earning"){
 
-                        earnings = earnings + parseFloat(transaction.data().value);
-                        sum = sum + parseFloat(transaction.data().value);
-                    }else{
+                            earnings = earnings + parseFloat(transaction.data().value);
+                            sum = sum + parseFloat(transaction.data().value);
+                        }else if(transaction.data().type === "Spending"){
 
-                        spendings = spendings + parseFloat(transaction.data().value);
-                        sum = sum - parseFloat(transaction.data().value);
-                    }
+                            spendings = spendings + parseFloat(transaction.data().value);
+                            sum = sum - parseFloat(transaction.data().value);
+                        }else{
 
-                });
+                            transfers = transfers + parseFloat(transaction.data().value);
+                            sum = sum - parseFloat(transaction.data().value);
+                        }
 
-                let transactionsListArrayLimited = transactionsListArray.slice(0, 6);
+                    });
 
-                setTotalEarnings(earnings);
-                setTotalSpendings(spendings);
-                setTotal(sum);
-                setTransactionsList(transactionsListArray);
-                setTransactionsListLimited(transactionsListArrayLimited);
+                    let transactionsListArrayLimited = transactionsListArray.slice(0, 6);
 
-            }
+                    setTotalEarnings(earnings);
+                    setTotalSpendings(spendings);
+                    setTotalTransfers(transfers);
+                    setTotal(sum);
+                    setTransactionsList(transactionsListArray);
+                    setTransactionsListLimited(transactionsListArrayLimited);
+
+                }
             });
 
         return(()=>{
@@ -282,6 +296,7 @@ const HomeController = (props) =>{
 
             totalEarnings={totalEarnings}
             totalSpendigns={totalSpendings}
+            totalTransfers={totalTransfers}
             total={total}
 
             userData={userData}

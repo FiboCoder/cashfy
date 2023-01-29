@@ -7,13 +7,28 @@ const TransactionComponent = (props) =>{
 
     const navigation = useNavigation();
 
+    const getIconContainerStyle = () =>{
+
+        switch(props.transaction.type){
+
+            case "Earning":
+                return styles.iconContainerGreen;
+
+            case "Spending":
+                return styles.iconContainerRed;
+
+            case "Transfer":
+                return styles.iconContainerGray;
+        }
+    }
+
     return(
 
         <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack", {transaction: props.transaction, route: props.route})}} style={styles.container}>
 
             <View style={styles.subContainer}>
 
-                <View style={props.transaction.type == "Earning" ? styles.iconContainerGreen : styles.iconContainerRed}>
+                <View style={ getIconContainerStyle() }>
                     <SimpleLineIcons name="handbag" size={20} color="white" />
                 </View>
 
@@ -67,6 +82,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         backgroundColor: "red",
+        borderRadius: 50
+    },
+
+    iconContainerGray:{
+
+        width: 50,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "gray",
         borderRadius: 50
     },
 

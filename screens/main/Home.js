@@ -10,7 +10,7 @@ import ChartController from "../../controller/components/ChartController";
 
 const Home = (props) =>{
 
-    console.log(props.totalSum)
+    console.log(props.spendingSum)
 
     const navigation = useNavigation();
 
@@ -137,7 +137,7 @@ const Home = (props) =>{
                                     <TouchableOpacity onPress={()=>{props.addTransactionOption("Spending")}} style={styles.addBtnOptionsExpenseContainer}>
                                         <Text style={styles.addBtnOptionsExpenseText}>Gasto</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity onPress={()=>{props.addTransactionOption("Transfers")}} style={styles.addBtnOptionsTransferContainer}>
+                                    <TouchableOpacity onPress={()=>{props.addTransactionOption("Transfer")}} style={styles.addBtnOptionsTransferContainer}>
                                         <Text style={styles.addBtnOptionsTransferText}>Transferências</Text>
                                     </TouchableOpacity>
                                 </View>
