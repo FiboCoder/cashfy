@@ -9,26 +9,48 @@ export class Transaction{
 
     }
 
-    static saveTransaction(email, type, value, name, description, category, date){
+    static saveTransaction(email, type, value, name, description, category, date, transferType){
 
         return new Promise((resolve, reject)=>{
 
-            addDoc(collection(db, "users", email, "transactions"), {
+            if(type == "Transfer"){
 
-                type,
-                value, 
-                name, 
-                category, 
-                description, 
-                date
-            }).then(result=>{
+                addDoc(collection(db, "users", email, "transactions"), {
 
-                resolve(result);
-            }).catch(err=>{
+                    type,
+                    value, 
+                    name, 
+                    category, 
+                    description, 
+                    date,
+                    transferType
+                }).then(result=>{
+    
+                    resolve(result);
+                }).catch(err=>{
+    
+                    reject(err);
+    
+                });
+            }else{
 
-                reject(err);
+                addDoc(collection(db, "users", email, "transactions"), {
 
-            });
+                    type,
+                    value, 
+                    name, 
+                    category, 
+                    description, 
+                    date
+                }).then(result=>{
+    
+                    resolve(result);
+                }).catch(err=>{
+    
+                    reject(err);
+    
+                });
+            }
         });
     }
 
@@ -54,10 +76,7 @@ export class Transaction{
             }else if(chartTime == "month"){
 
                 let d = new Date();
-                let m = d.getMonth();
-                d.setMonth(d.getMonth() - 1);
-
-                if (d.getMonth() == m) d.setDate(0);
+                d.setDate(d.getDate() - 30);
                 d.setHours(0, 0, 0, 0);
 
                 const q = query(collection(db, "users", email, "transactions"), where("date", ">=", d.getTime()));
@@ -72,7 +91,7 @@ export class Transaction{
             }else{
 
                 let d = new Date();
-                d.setFullYear(d.getFullYear() - 1);
+                d.setDate(d.getDate() - 365);
                 d.setHours(0, 0, 0, 0);
                 
                 const q = query(collection(db, "users", email, "transactions"), where("date", ">=", d.getTime()));

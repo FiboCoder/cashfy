@@ -11,8 +11,9 @@ const AddTransactionController = (props) =>{
     const [transactionValue, setTransactionValue] = useState("");
     const [transactionName, setTransactionName] = useState("");
     const [transactionDescription, setTransactionDescription] = useState("");
-    const [transactionCategory, setTransactionCategory] = useState("");
+    const [transactionCategory, setTransactionCategory] = useState("Selecione:");
     const [transactionDate, setTransactionDate] = useState(new Date());
+    const [transferType, setTransferType] = useState("Selecione:");
 
     const [isLoading, setIsLoading] =useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -20,7 +21,6 @@ const AddTransactionController = (props) =>{
     const navigation = useNavigation();
     const route = useRoute();
 
-    console.log(route.params.transactionType)
 
     const data = [
         
@@ -75,7 +75,8 @@ const AddTransactionController = (props) =>{
                                 transactionName, 
                                 transactionDescription, 
                                 transactionCategory, 
-                                transactionDate.getTime()
+                                transactionDate.getTime(),
+                                transferType
                             ).then(result=>{
 
                                 if(route.params.transactionType == "Earning"){
@@ -106,7 +107,17 @@ const AddTransactionController = (props) =>{
                                     });
                                 }else{
 
-                                    let balance = parseFloat(route.params.userData.balance) - parseFloat(Format.intToCurrency(transactionValue));
+                                    let balance = 0;
+
+                                    if(transferType == "Received"){
+
+                                        balance = parseFloat(route.params.userData.balance) +  parseFloat(Format.intToCurrency(transactionValue));
+
+                                    }else{
+
+                                        balance = parseFloat(route.params.userData.balance) - parseFloat(Format.intToCurrency(transactionValue));
+                                    }
+
                                     User.updateBalance(String(balance.toFixed(2)), route.params.userData.email).then(result=>{
 
                                         setTransactionValue("");
@@ -157,12 +168,14 @@ const AddTransactionController = (props) =>{
             setTransactionDescription={setTransactionDescription}
             setTransactionCategory={setTransactionCategory}
             setTransactionDate={setTransactionDate}
+            setTransferType={setTransferType}
 
             transactionValue={transactionValue}
             transactionName={transactionName}
             transactionDescription={transactionDescription}
             transactionCategory={transactionCategory}
             transactionDate={transactionDate}
+            transferType={transferType}
 
             isLoading={isLoading}
             errorMessage={errorMessage}

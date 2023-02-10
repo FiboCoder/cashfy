@@ -22,6 +22,36 @@ const TransactionComponent = (props) =>{
         }
     }
 
+    const getValuePrefixStyle = () =>{
+
+        switch(props.transaction.type){
+
+            case "Earning":
+                return styles.valueTextGreen;
+
+            case "Spending":
+                return styles.valueTextRed;
+
+            case "Transfer":
+                return styles.valueTextGray;
+        }
+    }
+
+    const getValuePrefix = () =>{
+
+        switch(props.transaction.type){
+
+            case "Earning":
+                return "+ R$";
+
+            case "Spending":
+                return "- R$";
+
+            case "Transfer":
+                return "R$";
+        }
+    }
+
     return(
 
         <TouchableOpacity onPress={()=>{navigation.navigate("TransactionDetailsStack", {transaction: props.transaction, route: props.route})}} style={styles.container}>
@@ -40,7 +70,7 @@ const TransactionComponent = (props) =>{
             </View>
             
 
-            <Text style={props.transaction.type == "Earning" ? styles.priceTextGreen : styles.priceTextRed}>{props.transaction.type == "Earning" ? "+ R$" : "- R$"}{props.transaction.value}</Text>
+            <Text style={ getValuePrefixStyle() }>{ getValuePrefix() }{Format.intToReal(props.transaction.value)}</Text>
         </TouchableOpacity>
     );
 }
@@ -115,18 +145,25 @@ const styles = StyleSheet.create({
 
     },
 
-    priceTextGreen:{
+    valueTextGreen:{
 
         fontSize: 18,
         fontWeight: "700",
         color: "green"
     },
 
-    priceTextRed:{
+    valueTextRed:{
 
         fontSize: 18,
         fontWeight: "700",
         color: "red"
+    },
+
+    valueTextGray:{
+
+        fontSize: 18,
+        fontWeight: "700",
+        color: "gray"
     }
 });
 

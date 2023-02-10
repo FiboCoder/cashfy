@@ -58,13 +58,9 @@ const HomeController = (props) =>{
 
     const fetchData = () =>{
 
-        console.log("TESTE FETCH DATA - " + userDataContext.email)
-
         if(chartTime == "Semana"){
 
             Transaction.recoverTransactionToChart(userDataContext.email, "week").then(transactions=>{
-
-                console.log(transactions.empty)
 
                 if(!transactions.empty){
 
@@ -77,8 +73,6 @@ const HomeController = (props) =>{
                     let tSum = 0;
 
                     transactions.forEach(transaction=>{
-
-                        console.log(" AAAAAAAAAAAAAAAAAAAAAAAA " + transaction.data().value)
 
                         if(transaction.data().type == "Earning"){
 

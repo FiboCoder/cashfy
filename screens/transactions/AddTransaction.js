@@ -8,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { Format } from "../../utils/Format";
 import LoadingBar from "../components/LoadingBar";
+import { Menu, MenuOption, MenuOptions, MenuProvider, MenuTrigger } from "react-native-popup-menu";
 
 
 const AddTransaction = (props) =>{
@@ -90,6 +91,35 @@ const AddTransaction = (props) =>{
         }
     }
 
+    const renderCategoryMenu = () =>{
+
+        switch(props.transactionTypeRoute){
+
+            case "Earning":
+                return(
+                    <>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Salário")} text='Salário'/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Adiantamento")} text="Adiantamento"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Renda extra")} text="Renda Extra"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Dividendos")} text="Dividendos"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Comissão")} text="Comissão"/>
+                    </>
+                );
+
+            case "Spending":
+                return(
+                    <>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Contas básicas")} text='Contas básicas'/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Restaurante")} text="Restaurante"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Lazer")} text="Lazer"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Academia")} text="Academia"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Saúde")} text="Saúde"/>
+                        <MenuOption onSelect={() => props.setTransactionCategory("Viajem")} text="Viajem"/>
+                    </>
+                );
+        }
+    }
+
     return(
 
         <View style={getContainerStyle()}>
@@ -118,52 +148,80 @@ const AddTransaction = (props) =>{
             <View style={styles.mainContainer}>
 
                 <ScrollView style={{}} contentContainerStyle={{padding: 20, paddinTop: 0, paddingBottom: 0}}>
+                    <MenuProvider>
 
-                <Text style={styles.fieldTitleText}>Título</Text>
+                        <Text style={styles.fieldTitleText}>Título</Text>
 
-                <View style={ getBoxStyle() } >
+                        <View style={ getBoxStyle() } >
 
-                    <MaterialIcons name="title" size={24} color="#565656" />
-                    <TextInput onChangeText={(val)=>{props.setTransactionName(val)}} style={styles.textInputMain} placeholder="Títuo">{props.transactionName}</TextInput>
+                            <MaterialIcons name="title" size={24} color="#565656" />
+                            <TextInput onChangeText={(val)=>{props.setTransactionName(val)}} style={styles.textInputMain} placeholder="Títuo">{props.transactionName}</TextInput>
 
-                </View>
+                        </View>
 
-                <Text style={styles.fieldTitleText}>Descrição</Text>
+                        <Text style={styles.fieldTitleText}>Descrição</Text>
 
-                <View style={ getBoxStyle() } >
+                        <View style={ getBoxStyle() } >
 
-                    <MaterialIcons name="subtitles" size={24} color="#565656" />
-                    <TextInput onChangeText={(val)=>{props.setTransactionDescription(val)}} style={styles.textInputMain} placeholder="Descrição">{props.transactionDescription}</TextInput>
+                            <MaterialIcons name="subtitles" size={24} color="#565656" />
+                            <TextInput onChangeText={(val)=>{props.setTransactionDescription(val)}} style={styles.textInputMain} placeholder="Descrição">{props.transactionDescription}</TextInput>
 
-                </View>
+                        </View>
 
-                <Text style={styles.fieldTitleText}>Categoria</Text>
 
-                <SelectList 
+                        {
 
-                    boxStyles={ getBoxStyle() } 
-                    dropdownStyles={ getDropdownStyle() } 
-                    inputStyles={styles.inputStyle} 
-                    search={false} 
-                    placeholder={"Selecionar Opção"} 
-                    setSelected={(val)=>{props.setTransactionCategory(val)}} 
-                    data={props.data} 
-                    save="value">
+                            props.transactionTypeRoute == "Transfer"
+                                ?
+                                    null
+                                :
+                                    <>
+                                        <Text style={styles.fieldTitleText}>Categoria</Text>
 
-                </SelectList>
+                                            <Menu >
+                                                <MenuTrigger style={[getBoxStyle(), {paddingTop: 14, paddingBottom: 14}]} text={props.transactionCategory} />
 
-                <Text style={styles.fieldTitleText}>Data</Text>
+                                                <MenuOptions>
+                                                    {renderCategoryMenu()}
+                                                </MenuOptions>
+                                            </Menu>
+                                    </>
+                                
+                        }
 
-                <TouchableWithoutFeedback onPress={props.showDatePicker} style={props.transactionTypeRoute == "Earning" ?  styles.textInputMain : styles.textInputMain}>
-                    <View style={ getDateButtonStyle() }>
-                        <AntDesign name="calendar" size={24} color="#565656" />
-                        <Text style={styles.transactionDateText} placeholder="Data da transação">{props.transactionDate.toLocaleDateString()}</Text>
-                    </View>
-                </TouchableWithoutFeedback>
+                        <Text style={styles.fieldTitleText}>Data</Text>
 
-                <Text style={styles.errorMessageText}>{props.errorMessage}</Text>
+                        <TouchableWithoutFeedback onPress={props.showDatePicker} style={props.transactionTypeRoute == "Earning" ?  styles.textInputMain : styles.textInputMain}>
+                            <View style={ getDateButtonStyle() }>
+                                <AntDesign name="calendar" size={24} color="#565656" />
+                                <Text style={styles.transactionDateText} placeholder="Data da transação">{props.transactionDate.toLocaleDateString()}</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
 
-                
+                        {
+
+                            props.transactionTypeRoute == "Transfer"
+                                ?
+
+                                    <>  
+                                
+                                        <Text style={styles.fieldTitleText}>Tipo da Transação</Text>
+                                            <Menu>
+                                                <MenuTrigger style={styles.categoryPopupMenu} text={props.transferType}/>
+
+                                                <MenuOptions>
+                                                    <MenuOption onSelect={()=>{props.setTransferType("Received")}} text="Recebida"/>
+                                                    <MenuOption onSelect={()=>{props.setTransferType("Sended")}} text="Enviada"/>
+                                                </MenuOptions>
+                                            </Menu>
+                                    </>
+                                    
+                                :
+                                null
+                        }
+
+                        <Text style={styles.errorMessageText}>{props.errorMessage}</Text>
+                    </MenuProvider>
                 </ScrollView>
             </View>
             <TouchableOpacity 
@@ -259,6 +317,18 @@ const styles = StyleSheet.create({
         marginBottom: 10
     },
 
+    categoryPopupMenu:{
+
+        flexDirection: "row",
+        marginBottom: 14, 
+        paddingTop: 14, 
+        paddingBottom: 14, 
+        paddingLeft: 12,
+        borderWidth: 1, 
+        borderColor: "gray", 
+        borderRadius: 8,
+    },
+
     textInputContainerGreen:{
 
         flexDirection: "row",
@@ -299,7 +369,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 50,
+        marginBottom: 14,
         borderWidth: 1,
         borderColor: "green",
         paddingTop: 12,
@@ -314,7 +384,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 50,
+        marginBottom: 14,
         borderWidth: 1,
         borderColor: "red",
         paddingTop: 12,
@@ -329,7 +399,7 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 50,
+        marginBottom: 14,
         borderWidth: 1,
         borderColor: "gray",
         paddingTop: 12,
@@ -349,8 +419,8 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         marginBottom: 14, 
-        paddingTop: 12, 
-        paddingBottom: 12,
+        paddingTop: 10, 
+        paddingBottom: 10,
         paddingLeft: 12,
         borderWidth: 1, 
         borderColor: "green", 
@@ -362,8 +432,8 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         marginBottom: 14, 
-        paddingTop: 12, 
-        paddingBottom: 12,
+        paddingTop: 10, 
+        paddingBottom: 10,
         paddingLeft: 12,
         borderWidth: 1, 
         borderColor: "red", 
@@ -375,8 +445,8 @@ const styles = StyleSheet.create({
 
         flexDirection: "row",
         marginBottom: 14, 
-        paddingTop: 12, 
-        paddingBottom: 12, 
+        paddingTop: 10, 
+        paddingBottom: 10, 
         paddingLeft: 12,
         borderWidth: 1, 
         borderColor: "gray", 

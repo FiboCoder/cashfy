@@ -25,11 +25,23 @@ const TransactionDetails = (props) =>{
             <View style={styles.categoryIconContainer}>
                     <SimpleLineIcons name="handbag" size={28} color="#1D1D1D" />
             </View>
+            <Text style={styles.transactionCategoryText}>{props.transaction.category}</Text>
 
             <Text style={styles.transactionNameText}>{props.transaction.name}</Text>
-            <Text style={styles.transactionCategoryText}>{props.transaction.category}</Text>
-            <Text style={styles.transactionValueText}>{"R$" + Format.intToReal(props.transaction.value)}</Text>
             <Text style={styles.transactionDescriptionText}>{props.transaction.description}</Text>
+
+            {
+
+                props.transaction.type == "Transfer"
+                ?
+                    <Text style={styles.transactionTransferTypeText}>{props.transaction.transferType == "Received" ? "Transferência Recebida" : "Transferência Enviada"}</Text>
+                
+                :null
+
+            }
+
+            <Text style={styles.transactionValueText}>{"R$" + Format.intToReal(props.transaction.value)}</Text>
+
         </View>
     );
     
@@ -69,7 +81,7 @@ const styles = StyleSheet.create({
 
         width: 80,
         height: 80,
-        marginBottom: 30,
+        marginBottom: 6,
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 50,
@@ -80,7 +92,8 @@ const styles = StyleSheet.create({
 
         fontSize: 24,
         fontWeight: "700",
-        color: "white"
+        color: "white",
+        marginBottom: 6
     },
 
     transactionCategoryText:{
@@ -93,7 +106,6 @@ const styles = StyleSheet.create({
 
     transactionValueText:{
 
-        marginBottom: 16,
         fontSize: 30,
         fontWeight: "700",
         color: "white"
@@ -103,7 +115,16 @@ const styles = StyleSheet.create({
 
         fontSize: 14,
         fontWeight: "600",
-        color: "lightgray"
+        color: "lightgray",
+        marginBottom: 30
+    },
+
+    transactionTransferTypeText:{
+
+        fontSize: 14,
+        fontWeight: "600",
+        color: "lightgray",
+        marginBottom: 6
     }
 });
 
